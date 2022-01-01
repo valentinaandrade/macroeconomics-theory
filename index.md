@@ -10,7 +10,7 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
 # Seguimientos
 
 - [Seguimiento N°1](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/seguimiento1.html)
-  - [Repositorio con códigos y documentos](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias)
+  - [Repositorio con códigos y documentos](https://github.com/valentinaandrade/macroeconomics-theory/tree/main/practice/ayudantias)
 
 # Clases
 
