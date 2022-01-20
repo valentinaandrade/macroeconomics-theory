@@ -1,0 +1,281 @@
+---
+title: |
+ | \vspace{5cm} Introduction to Dynamic Programming
+subtitle: |
+ Macroeconomics Theory - EAE320B
+date: "`r format(Sys.Date(), '%A %d, %B %Y')`"
+author: | 
+ | 
+ | \vspace{8cm} [Valentina Andrade](mailto:valentinaandrade@uchile.cl) <br> Professor Alexandre Janiak
+header-includes:
+- \usepackage{titling}
+- \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{../../../docs/logo/logo-ie-uc.png}\\[\bigskipamount]}
+- \posttitle{\end{center}}
+- !expr system.file("includes/fig-valign.tex", package = "summarytools")
+- \usepackage{booktabs}
+- \usepackage{amsmath}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+output:
+  pdf_document:
+    extra_dependencies: ["float"]
+    latex_engine: xelatex
+    highlight: tango
+    number_sections: FALSE
+    toc: yes
+  html_document:
+    highlight: tango
+bibliography: "https://github.com/nicolasrattor/formatos/raw/main/Formato%20pdf%20uc/input/bib/bib.bib"
+linkcolor: red
+urlcolor: blue
+link-citations: yes
+csl: "https://github.com/nicolasrattor/formatos/raw/main/Formato%20pdf%20uc/input/bib/apa.csl"
+fontsize: 11pt
+lang: "es-CL"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE,
+                      error = F, 
+                      message = FALSE,
+                      fig.pos = "H", out.extra = "") 
+Sys.setlocale("LC_ALL","ES_ES.UTF-8") # para temas de caracteres en español, recomendable
+```
+
+
+# Dynamic Programming: Piece of Cake
+
+We have a cake of size $W_1$ and we need to decide how much of it consume in each period $t = 1, 2, 3, ...$ to maximize consumption utility.
+
+Eventualmente pensaremos que la gente decide consumir todo el trozo de torta, pero más bien plantearemos que la gente piensa que maximizar su consumo para todos los periodos en un horizonte de tiempo definido o infinito. 
+
+**Step 1**. Assumptions
+
+1. [INADA](#inada): Cake consumption value as $u(c)$, $u$ is concave $u'(c) > 0$, increasing ($u''(c) < 0$), differentiable and $\lim_{c \to 0} u'(c) = \infty$
+
+
+2. Lifetime utility is 
+\begin{equation} \label{eq1}
+u = \sum_{t=1}^{T} \beta^{t-1} u (c_t),~ \beta~ \epsilon [0,1]
+\end{equation}
+
+3. Constraints: the cake does not depreciate
+
+\begin{equation} \label{eq2}
+W_{t+1} = W_t - c_t , ~~ t = 1,2,...,T
+\end{equation}
+
+Notice \ref{eq2} the law of motion implies 
+
+\begin{equation} \label{res}
+\begin{split}
+W_1 & =  W_2 + c_1 \\
+ & = (W_3 + c_2) + c_{1} \\
+ & = ... \\
+ & =  W_{t + 1} + \sum_{t=1}^{T} c_{t}
+\end{split}
+\end{equation}
+
+**Step 2**.  Decide the optimal consumption sequence $\{~c~\}~_{t=1} ^T$
+
+The problem can be written
+
+\begin{equation} \label{problem}
+v (W_1) = \max_{\{W_{t+1}, C_t\}~~_{t=1}^T} \sum_{t=1}^{T} \beta^{t-1} u (c_t)
+\end{equation}
+subject to:
+
+\begin{equation} 
+ W_1  =  W_{t + 1} + \sum_{t=1}^{T} c_{t}
+\end{equation}
+
+$$c_t, W_{t+1} \geq 0$$
+$$W_1 ~~ given$$
+
+$v(W_1)$ Represents value function of state 
+
+**Step 3.** Formulate and solve Langrangian for \ref{res} and \label{problem}
+
+\begin{equation} \label{lag}
+L = \sum_{t=1}^{T} \beta^{t-1} u (c_t) + \lambda [W_1 - W_{t+1} - \sum_{t=1}^{T} c_t] + \phi[W_{t+1}]
+\end{equation}
+
+**Step 4**. First Order Conditions
+
+\begin{equation} \label{foc1}
+\frac{\partial L }{\partial c_t} = 0
+\Longrightarrow \beta^{t-1}u'(c_t) = \lambda \forall t
+\end{equation}
+
+\begin{equation} \label{foc2}
+\frac{\partial L }{\partial W_{t+1}} = 0 \Longrightarrow \lambda = \phi
+\end{equation}
+
+- $\phi$ is lagrange multiplier on non-negativity constraint for $W_{t+1}$
+- I ignore the constraint $c_t \geq 0$ because the [INADA assumption](#inada)
+
+**Step 5**. Interpreting sequential solution
+
+If we take from \ref{foc1} for *t+1*, therefore
+
+\begin{equation} \label{demeuler}
+\begin{split}
+\beta ^{t-1}u'(c_t) = \lambda
+= \beta ^{t}u'(c_t+1)
+\end{split}
+\end{equation}
+
+Along an optimal sequence $\{c_t\}^T_{t+1}$ each adjacent period t and t+1 must satisfy \ref{euler}, ie, utility in both periods is maximum.
+
+\begin{equation} \label{euler}
+u'(c_t) = \beta u'(c_t+1)
+\end{equation}
+
+**Step 6**. Generalization $t$ from $t+n$ periods
+
+The Euler Equation isn't sufficient for optimality. We could statisfy \ref{euler}, but have some cake left ($W_t > c_t$).
+
+We need to be ensure to given initial condition ($W_1$), terminal condition must be $W_{t+1} = 0$. 
+
+This form of solution is called **value function** ($v(W_1)$), were is the maximal utility flow over **T periods** given initial cake $W_1$
+
+*Example*. Power Utility Functions
+
+We will look at specific class of U functions: Power Utility, or, *isoelastic* utility functions.
+
+This class includes the **hyperbolic** or **constant** relative **risk of aversion functions**. 
+
+Let's defined as
+$$
+u(c) =
+\begin{cases}
+\frac{c^1 - \gamma}{1 - \gamma} ~~~~ \text{if}~~~~ \gamma \neq 1 \\
+ln(c) ~~~~ \text{if} ~~~~ \gamma = 1
+\end{cases}
+$$
+The coefficient of **relative risk aversion** is a *constant*, $\gamma$, i.e, risk aversion does not depend on level of wealth. Also, $u'(c_t) = c_t^- \gamma $
+
+```{julia, eval = F}
+# this is julia
+library(JuliaCall)
+function u(c,gamma)
+if gamma==1
+return log(c)
+else
+return (1/(1-gamma)) * c^(1-gamma)
+end
+end
+```
+
+```{julia, eval = F }
+
+using PGFPlots
+using LaTeXStrings
+p=Axis([
+Plots.Linear(x->u(x,0),(0.5,2),legendentry=L"$\gamma=0$"),
+Plots.Linear(x->u(x,1),(0.5,2),legendentry=L"$\gamma=1$"),
+Plots.Linear(x->u(x,2),(0.5,2),legendentry=L"$\gamma=2$"),
+Plots.Linear(x->u(x,5),(0.5,2),legendentry=L"$\gamma=5$")
+],xlabel=L"$c$",ylabel=L"$u(c)$",style="grid=both")
+p.legendStyle = "{at={(1.05,1.0)},anchor=north west}"
+save("images/dp/CRRA.tex",p,include_preamble=false)
+# then, next slide just has \input{images/dp/CRRA}
+```
+
+**CRRA functions**
+image
+
+**CRRA utility properties**
+
+We had:
+$$
+u(c) =
+\begin{cases}
+\frac{c^1 - \gamma}{1 - \gamma} ~~~~ \text{if}~~~~ \gamma \neq 1 \\
+ln(c) ~~~~ \text{if} ~~~~ \gamma = 1
+\end{cases}
+$$
+
+were $\gamma ^-1$ is the elastic of intertermporal substitution (IES). **IES** is defined as the **percent change in consumption growth percent increase in the net interest rate**. [^1]
+
+Generally, it is accepted that $\gamma \geq 1$, in which case for
+
+\begin{equation}c ~\epsilon ~  \mathbb R^+ \end{equation}
+
+- $u (c) < 0, \lim_{c \to 0} u(c) = - \infty, ~~ \lim_{c \to \infty} u(c) = 0$ 
+- $u'(c) > 0 , \lim_{c \to 0} u'(c) = \infty, ~~ \lim_{c \to \infty} u'(c) = 0$
+
+**CRRA utility: solution 1**
+
+- Let's modify our cake eating problem
+- $W_t \Longrightarrow a_t$, and we introduce gross interest $R = 1 + r$ (for non-growing cake just take r = 0)
+
+\begin{equation} \label{sol1}
+\max_{\{(c_1, ..., C_t) \epsilon  (\mathbb R^+)^T \}} \sum_{t=1}^{T} \beta^{t-1} \frac{c^1 - \gamma}{1 - \gamma}
+\end{equation}
+
+subject to:
+
+\begin{equation} 
+\sum_{t=1}^{T} R ^{1-t} c_{t} \leq a_1
+\end{equation}
+
+- **Euler equations** are necessary for interior solutions. Rememver $u'(c_t) = c_t-^\gamma$
+
+\begin{equation}
+c_t ^- \gamma = \beta T c_{t+1}^-\gamma \Longrightarrow c_t = ( R \beta) ^{\frac{1}{\gamma}} c_{t+1} ~~~~ \text{for t = 1, ..., T-1}
+\end{equation}
+
+By sucessive substitution
+
+\begin{equation}
+c_t = ( R \beta)^{\frac{t-1}{\gamma}} c_1
+\end{equation}
+
+The budget constraint and optimality condition imply
+
+\begin{equation}
+\begin{split}
+a_1 =  \sum_{t=1, ..., T} R ^{1-t} c_t \\
+& = \sum_{t=1, ..., T} (R ^{\frac{1 - \gamma}{\gamma}} \beta ^{\frac{1}{\gamma}})^{t-1} \\
+& = \sum_{t=1, ..., T} \alpha ^{t-1}
+\end{split}
+\end{equation}
+
+The solution for t = 1, ..., T:
+
+$c_1 = \frac{1- \alpha}{1 - \alpha ^T} \cdot a_1$ and $ct = \frac{1 - \alpha}{1- \alpha ^T } \cdot (R \beta) ^{\frac{t-1}{\gamma}} \cdot a_1$
+
+In summary, **the consumption function** a *linear function of assets if utility is CRRA. 
+
+$$ct = \frac{1 - \alpha}{1- \alpha ^{T-t+1} } \cdot a_t$$
+
+here, image of the profile of solution
+
+## The dynamic programming approach with T = $\infty$
+
+
+
+# Dynamic Programming Theory
+
+# Stochastic Dynamic Programming
+
+# References
+
+Adda and Cooper (2003): Dynamic Economics.
+
+Ljungqvist and Sargent (2012) (LS): Recursive Macroeconomic Theory.
+
+Lucas and Stokey (1989): Recursive Methods in Economics Dynamics
+
+[^1]: medida de la capacidad de respuesta de la tasa de crecimiento del consumo a la tasa de interés real, es decir como cambia el consumo presente ante cambios en el consumo futuro. Si las subidas de los tipos reales, el consumo futuro puede aumentar debido a la mayor rentabilidad de los ahorros, pero el futuro consumo también puede disminuir a medida que el ahorrador decide consumir menos teniendo en cuenta que puede conseguir un mayor retorno de lo que ahorra (es decir, no consume). El efecto neto sobre el consumo futuro es la elasticidad de sustitución intertemporal. 
