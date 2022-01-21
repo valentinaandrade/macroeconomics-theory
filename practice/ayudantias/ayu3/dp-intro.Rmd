@@ -75,11 +75,11 @@ u = \sum_{t=1}^{T} \beta^{t-1} u (c_t),~ \beta~ \epsilon [0,1]
 W_{t+1} = W_t - c_t , ~~ t = 1,2,...,T
 \end{equation}
 
-Notice \ref{eq2} the law of motion implies 
+Notice \ref{eq2} the law of motion (or **transition equation**) implies 
 
 \begin{equation} \label{res}
 \begin{split}
-W_1 & =  W_2 + c_1 \\
+W_1 =  W_2 + c_1 \\
  & = (W_3 + c_2) + c_{1} \\
  & = ... \\
  & =  W_{t + 1} + \sum_{t=1}^{T} c_{t}
@@ -143,11 +143,19 @@ u'(c_t) = \beta u'(c_t+1)
 
 **Step 6**. Generalization $t$ from $t+n$ periods
 
+\begin{equation}
+u'(c_t) = \beta ^2 u'(c_{t+2})
+\end{equation}
+
 The Euler Equation isn't sufficient for optimality. We could statisfy \ref{euler}, but have some cake left ($W_t > c_t$).
 
 We need to be ensure to given initial condition ($W_1$), terminal condition must be $W_{t+1} = 0$. 
 
-This form of solution is called **value function** ($v(W_1)$), were is the maximal utility flow over **T periods** given initial cake $W_1$
+This form of solution is called **value function** ($v(W_1)$), were is the maximal utility flow over **T periods** given initial cake $W_1$ (Adda and Cooper, p. 13)
+
+\begin{equation}
+V'(W_1) = \lambda = \beta ^{t-1} u' (c_t), t = 1, 2, ..., T
+\end{equation}
 
 *Example*. Power Utility Functions
 
@@ -264,7 +272,229 @@ here, image of the profile of solution
 
 ## The dynamic programming approach with T = $\infty$
 
+**Step 1**. Assumptions
 
+- $T = \infty$
+
+\begin{equation} \label{problem-dp}
+\max_{\{(W_{t+1}, C_t) \}_{t=1} ^\infty} \sum_{t=1}^{\infty} \beta^{t-1} u(c_t)
+\end{equation}
+
+s.t
+
+\begin{equation} \label{transition}
+W_{t+1} = W_t - c_t
+\end{equation}
+
+When we consider adding a period 0 to our original problem, we can take advantage of the information provided in $V_t(W_1)$, the solution of the T period problem given $W_1$ from \ref{problem} and \ref{problem-dp}. Now we can write
+
+\begin{equation} \label{problem-valuefunction}
+v(W_t) = \max_{\{ c_t \epsilon [0,W_t]\}} u(c_t) + \beta v (W_t - c_t)
+\end{equation}
+
+Notice in \ref{problem-valuefunction}
+
+- $W$ is **state variable**
+- $c$ is **control variable**
+- \ref{transition} is the **transition equation** or law of motion
+- $t$ is irrelevant, only state variable matters
+
+## Bellman equation
+
+Considering this points we can substituting $c = W - W'$, where $W'$ is the next period's value of $W$
+
+\begin{equation} \label{bellman}
+v(W) = \max_{\{ W' \epsilon [0,W]\}} u(W - W') + \beta v (W')
+\end{equation}
+
+Notice in \ref{bellman} equation
+
+- $v$ is in both sides
+- The problems is more simple: before we need to find ${\{(W_{t+1}, C_t) \}_{t=1} ^\infty}$ and now we need to find $v$ (value function)
+- This is called a **fixed point problem**: Find a function $v$ such that plugging in W on the *RHS* and doing the maximization, we end up with the v on the *LHS*
+
+### Value function and policy function
+
+We have reduced an infinite-length sequential problem to a one-dimensional maximization problem. But we have to find two unknown functions: 
+
+- The maximazer of the RHS of \ref{bellman} is the **policy function** $g(W) = c^*$. This function gives the optimal value of the control variable, given the state. Then,
+
+\begin{equation} \label{bellman}
+v(W) = u(g(W)) + \beta v (g(W))
+\end{equation}
+
+Now, the max operator vanished, because $g(W)$ is the optimal choice. In practice, finding value and policy function is the one operator.
+
+*Example*
+
+- Let's pretend that we knew $v$ for now
+
+\begin{equation}
+v(W) = \max_{\{ W' \epsilon [0,W]\}} u(W - W') + \beta v (W')
+\end{equation}
+
+- Assuming $v$ is differentiable, the FOC w.r.t W'
+
+\begin{equation} \label{foc-bellman} 
+u'(c) = \beta v' (W')
+\end{equation}
+
+Taking the partial derivative w.r.t the state W, we get the envolope condition
+
+\begin{equation} \label{value-bellman}
+v'(W) = u'(c)
+\end{equation}
+
+This needs to hold in each. Therefore
+
+\begin{equation}
+v'(W') = u'(c')
+\end{equation}
+
+Combing \ref{foc-bellman} and \ref{value-bellman} we obtain the usual Euler equation, and any solution $v$ will satisfy this necessary condition as in the sequential case. 
+
+\begin{equation}
+\begin{split}
+u'(c) = \beta v'(W')
+& = \beta u'(c')
+\end{split}
+\end{equation}
+
+### Finding $v$
+
+Finding the Bellman equation $v$ and associated policyfunction $g$ is not easy. In general, it is impossible to find an analytic expression, ie, *to do it by hand*. We will see thar under some conditions we can always find an fixed point. 
+
+#### Find $v$: an example with closed form solution
+
+Now I'm going to find $v$ by hand. Let's assume that u(c) = ln(c) and supusse T = 1. Then $u'(c) = \frac{1}{c}$, and $V_1(W_1) = ln(W_1)$
+
+**Step 1** Start with Euler equations
+For T = 2
+
+$$u'(c_t) = \beta u'(c_{t+1})$$
+$$\frac{1}{c_1} = \frac{\beta}{c_2}$$
+And the constraint is
+
+$$W_1 = c_1 + c_2$$
+
+Working with these conditions
+
+$$c_1 = \frac{W_1}{(1+ \beta)} ~~\land~~ c_2 = \frac{\beta W_1}{(1+\beta)}$$
+
+**Step 2** Formulation of policy function bases on value function
+
+\begin{equation}
+v(W) = \max_{\{ W' \epsilon [0,W]\}} u(W - W') + \beta v (W')
+\end{equation}
+
+Now we can solve for the value of 2 period problem
+
+\begin{equation}
+v_2(W_1) = ln(c_1) + \beta ln(c_2) = A_2 + B_2 ln(W_1) \text{in general,} \\
+v(W)= A + B ln(W_1)
+\end{equation}
+
+where A and B are constants associated with two period problem
+
+\begin{equation} \label{policy}
+A + Bln(W) = \max{W'} ln(W-W') + \beta (A + B ln W')
+\end{equation}
+
+**Step 3**. Obtain W' = g(w)
+
+First Order Condition for W'
+
+\begin{equation}
+\begin{split}
+- \frac{1}{(W-W')} + \frac{\beta B}{W'} = 0 \\
+W' = (\beta B W) - (\beta BW') \\
+W' = \frac{\beta B W}{1+\beta B} \\
+W' = g(W)
+\end{split}  
+\end{equation}
+
+i.e
+
+$$g (w) = \frac{\beta B W}{1+\beta B} $$
+
+**Step 4** Replace g(w) in policy function \label{policy}
+
+
+
+\begin{equation} \label{policy}
+A + Bln(W) = \max{W'} ln(W-W') + \beta (A + B ln W')
+\end{equation}
+
+Let's start with *LHS*(*guess*)
+
+
+\begin{equation} \label{policy}
+\begin{split}
+v(w) = ln(W-g(w)) + \beta (A + B ln g(w)) \\
+& = ln(W-\frac{\beta B W}{1+\beta B} + \beta (A + Bln[\frac{\beta B W}{1+\beta B}]) \\
+& = ln(\frac{W}{1+\beta B} + \beta (A + Bln[\frac{\beta B W}{1+\beta B}]) \\
+& = \beta A + ln(\frac{W}{1+\beta B} + \beta Bln[\frac{\beta B W}{1+\beta B}]
+\end{split}
+\end{equation}
+
+Now see *RHS* (*verify*)
+
+\begin{equation}
+v(w) = A + ln(W) + \beta B ln W \\
+v (w) = A + (1 + \beta B) ln W
+\end{equation}
+
+Then, 
+
+\begin{equation}
+B = (1 + \beta B)
+B = \frac{1}{1-\beta}
+\end{equation}
+
+$$\therefore ~~g (w) = \beta W$$
+#### Solving the Cake problem with T < $\infty$
+
+- When time is finite, solving this DP is fairly simple.
+- If we knoe the value in the final period, we can simply go backwards in time.
+- In period T there is no point setting W' > 0. Therefore
+
+$$v_t (W) = u (W)$$
+
+Notice that we index the value function with time in this case. It's not the same to have W in period 1 as it is to have W in period T. Right? But if we know $v_t$ for all values of W, we can construct $v_{T-1}$
+
+We know that
+
+\begin{equation}
+\begin{split}
+v_{t-1}(W_{t-1}) = \max{W_t \epsilon [0, W_{T-1}]} u(W_{T-1}-W_{T}) + \beta (v_t(W_t))
+& = \max{W_t \epsilon [0, W_{T-1}]} u(W_{T-1}-W_{T}) + \beta (u(W_t)) \\
+& = \max{W_t \epsilon [0, W_{T-1}]} ln(W_{T-1}-W_{T}) + \beta (ln(W_t)) \\
+\end{split}
+\end{equation}
+
+FOC for $W_t$
+
+\begin{equation}
+\begin{split}
+\frac{1}{W{T-1} - W{T}} = \frac{\beta}{W_t}
+W_T = \frac{\beta}{1 + \beta}W_{T-1} 
+\end{split}
+\end{equation}
+
+Thus, the value function in T - 1 is
+
+\begin{equation}
+V_{T-1}(W_{T-1}) = ln(\frac{ W_{T-1} }{ \beta }) + \beta ln( \frac{ \beta }{ 1 + \beta } \cdot W_{T-1})
+\end{equation}
+
+Thus, the value function in T - 2 is
+
+\begin{equation}
+v_{T-2}(W_{T-2}) =  u(W_{T-2}-W_{T-1}) + \beta (v_{T-1}(W_{T-1})) \\
+v_{T-2}(W_{T-2}) =  u(W_{T-2}-W_{T-1}) + \beta [ln( \frac{ W_{T-1} }{ \beta } + \beta ln( \frac{\beta}{1 + \beta} \cdot W_{T-1})])
+\end{equation}
+
+Notice that with T finite, there is no fixed point problem if we do backwards induction
 
 # Dynamic Programming Theory
 
