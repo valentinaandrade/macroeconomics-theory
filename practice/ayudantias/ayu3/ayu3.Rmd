@@ -1,0 +1,60 @@
+---
+title: |
+ | \vspace{5cm} Ayudantía 3
+subtitle: |
+ Teoría Econométrica I - EAE320B
+date: "`r format(Sys.Date(), '%A %d, %B %Y')`"
+header-includes:
+- \usepackage{titling}
+- \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{https://github.com/valentinaandrade/econometrics/blob/main/img/logo-ie-uc.png}\\[\bigskipamount]}
+- \posttitle{\end{center}}
+- !expr system.file("includes/fig-valign.tex", package = "summarytools")
+- \usepackage{booktabs}
+- \usepackage{amsmath}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+author: | 
+ | 
+ | \vspace{8cm} [Valentina Andrade](mailto:valentinaandrade@uchile.cl)
+output:
+  pdf_document:
+    extra_dependencies: ["float"]
+    latex_engine: xelatex
+    highlight: tango
+    number_sections: FALSE
+    toc: yes
+  html_document:
+    highlight: tango
+bibliography: "https://github.com/nicolasrattor/formatos/raw/main/Formato%20pdf%20uc/input/bib/bib.bib"
+linkcolor: red
+urlcolor: blue
+link-citations: yes
+csl: "https://github.com/nicolasrattor/formatos/raw/main/Formato%20pdf%20uc/input/bib/apa.csl"
+fontsize: 11pt
+lang: "es-CL"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE,
+                      error = F, 
+                      message = FALSE,
+                      echo = FALSE, fig.pos = "H", out.extra = "") 
+Sys.setlocale("LC_ALL","ES_ES.UTF-8") # para temas de caracteres en español, recomendable
+```
+
+# Consumo en dos periodos
+
+# Seguimiento
+
+Suponga un pequeña isla sin mercados financieros y acceso a internet incipiente. Hurley, un joven oriundo de la isla, acaba de ser mordido por una serpiente venenosa y solo vivirá 3 periodos más. Dada su condición actual, Hurley no puede trabajar y tuvo que gastar toda su riqueza en yerbas medicinales. Sin embargo, acaba de heredar una criptomoneda de su abuelo, la cual se puede transar en internet a un precio $p_0$ actualmente. Hurley cree que el precio de la criptomoneda varía de acuerdo a $p_t = p_{t-1}(1 + \epsilon_t)$, donde $\epsilon_t$ es un shock de precio aleatorio. Suponga que a pesar de su precario estado de salud, Hurley maximiza su utilidad esperada y vende
+una fracción de su criptomoneda a los habitantes de la isla cada periodo para financiar su consumo.
