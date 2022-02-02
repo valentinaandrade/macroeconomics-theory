@@ -9,8 +9,10 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
 
 # Seguimientos
 
-- [Seguimiento N°1](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/seguimiento1.html)
-  - [Repositorio con códigos y documentos](https://github.com/valentinaandrade/macroeconomics-theory/tree/main/practice/ayudantias)
+- [Seguimiento N°1](https://valentinaandrade.github.io/macroeconomics-theory/seguimiento1.html)
+- [Seguimiento N°2](https://valentinaandrade.github.io/macroeconomics-theory/ayu2/seguimiento2.html)
+- [Seguimiento N°3](https://valentinaandrade.github.io/macroeconomics-theory/ayu3/ayu3.pdf)
+  - [Dynamic Programming - Summary](https://valentinaandrade.github.io/macroeconomics-theory/ayu3/dp-intro.pdf)
 
 # Clases
 
