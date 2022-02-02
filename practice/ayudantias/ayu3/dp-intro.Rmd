@@ -498,6 +498,37 @@ Notice that with T finite, there is no fixed point problem if we do backwards in
 
 # Dynamic Programming Theory
 
+\begin{equation}
+u = \sum_{t=1}^{T} \beta^{t-1} \tilde{u}(s_t, c_t)
+\end{equation}
+
+- $\beta < 1$: discount factor
+- $s_{t+1}$: state vector evolves as $s_{t+1} = h(s_t, c_t)$
+  - $s_t$: state, and all past decisions are contained in s_t
+- $c_t$: control
+
+## Asumptions
+
+- Let $c_t ~ \epsilon~ c(s_t), s_t ~ \epsilon ~ S$ and assume $\tilde{u}$ is bounded in $(c,s) ~ \epsilon c x s$
+
+- Stationarity: neither payoff $\tilde{u}$ nor transition $h$ depend on time
+
+- Modify $\tilde{u}$ to $u$ subject to in terms of $s'$ (as in cake: $c = W-W'$):
+
+\begin{equation} \label{theorem46}
+v(s) = \max{s' \epsilon \Gamma (s)} u(s,s') + \beta v (s')
+\end{equation}
+
+- $\Gamma(s)$ is the contraint set (or feasible set) for s' when the current state is s:
+  - before that was $\Gamma(W) = [0,W]$
+  
+- We will work towards one possible set of sufficient conditions for the existence to the functional equation (see Stokey and Lucas (1989))
+
+## Proof of existence
+
+**Theorem**
+Assume that $u(s,s')$ is real-valued, continuos, and bounded, that $\beta \epsilon (0,1)$, and te constraint set $\Gamma(s)$ is *nonempty, compact and continuos*.Then there exists a unique function $v(s)$ that solves \ref{theorem46} (Stokey and Lucas, 1989, theorem 4.6 + Theorem of the Maximum)
+
 # Stochastic Dynamic Programming
 
 # References
@@ -507,5 +538,7 @@ Adda and Cooper (2003): Dynamic Economics.
 Ljungqvist and Sargent (2012) (LS): Recursive Macroeconomic Theory.
 
 Lucas and Stokey (1989): Recursive Methods in Economics Dynamics
+
+Stokey, N. L., Lucas, R. E., & Prescott, E. (1989). Recursive methods in dynamic economics. Cambridge, MA: Harvard University.
 
 [^1]: medida de la capacidad de respuesta de la tasa de crecimiento del consumo a la tasa de interés real, es decir como cambia el consumo presente ante cambios en el consumo futuro. Si las subidas de los tipos reales, el consumo futuro puede aumentar debido a la mayor rentabilidad de los ahorros, pero el futuro consumo también puede disminuir a medida que el ahorrador decide consumir menos teniendo en cuenta que puede conseguir un mayor retorno de lo que ahorra (es decir, no consume). El efecto neto sobre el consumo futuro es la elasticidad de sustitución intertemporal. 
