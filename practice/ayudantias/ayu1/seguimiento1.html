@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021b"><title>Seguimiento N° 1</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement,.eoOutputWrapper .matrixElement {    min-height: 18px;    box-sizing: border-box;}
+.embeddedOutputsMatrixElement .matrixElement,.eoOutputWrapper  .matrixElement,.rtcDataTipElement .matrixElement {    position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {    white-space: pre;    display: inline-block;    vertical-align: top;    overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {    display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {    padding-top: 0 !important;    max-height: 100px;}
+.inlineElement .matrixElement {    max-height: 300px;}
+.embeddedOutputsMatrixElement.rightPaneElement {}
+.rightPaneElement .matrixElement,.rtcDataTipElement .matrixElement {    overflow: hidden;    padding-left: 9px;}
+.rightPaneElement .matrixElement {    margin-bottom: -1px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.eoOutputWrapper .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {    white-space: nowrap;    margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.eoOutputWrapper .matrixElement .valueContainer .horizontalEllipsis.hide,.eoOutputWrapper .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {    display: none;}
+.embeddedOutputsVariableMatrixElement .matrixElement .valueContainer.hideEllipses .verticalEllipsis, .embeddedOutputsVariableMatrixElement .matrixElement .valueContainer.hideEllipses .horizontalEllipsis {    display:none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis,.eoOutputWrapper .matrixElement .valueContainer .horizontalEllipsis {    margin-bottom: -3px;}
+.eoOutputWrapper .embeddedOutputsVariableMatrixElement .matrixElement .valueContainer {    cursor: default !important;}
+.embeddedOutputsVariableElement {    white-space: pre-wrap;    word-wrap: break-word;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.embeddedOutputsVariableElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .variableElement {    padding-top: 2px;    padding-left: 9px;}
+.variableNameElement {    margin-bottom: 3px;    display: inline-block;}
+/* * Ellipses as base64 for HTML export. */.matrixElement .horizontalEllipsis,.rtcDataTipElement .matrixElement .horizontalEllipsis {    display: inline-block;    margin-top: 3px;    /* base64 encoded version of images-liveeditor/HEllipsis.png */    width: 30px;    height: 12px;    background-repeat: no-repeat;    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAJCAYAAADO1CeCAAAAJUlEQVR42mP4//8/A70xw0i29BUDFPxnAEtTW37wWDqakIa4pQDvOOG89lHX2gAAAABJRU5ErkJggg==");}
+.matrixElement .verticalEllipsis,.textElement .verticalEllipsis,.rtcDataTipElement .matrixElement .verticalEllipsis,.rtcDataTipElement .textElement .verticalEllipsis {    margin-left: 35px;    /* base64 encoded version of images-liveeditor/VEllipsis.png */    width: 12px;    height: 30px;    background-repeat: no-repeat;    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAZCAYAAAAIcL+IAAAALklEQVR42mP4//8/AzGYgWyFMECMwv8QddRS+P//KyimlmcGUOFoOI6GI/UVAgDnd8Dd4+NCwgAAAABJRU5ErkJggg==");}
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsErrorElement .diagnosticMessage-errorType {    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsWarningElement .diagnosticMessage-warningType {    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: pre;    word-wrap:  initial;    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsTextElement .textElement,.embeddedOutputsVariableStringElement .textElement {    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Seguimiento N° 1</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Teoría Macroeconómica I </span></div><div  class = 'S1'><span style=' font-weight: bold;'>Estudiante</span><span>: Valentina Andrade de la Horra                 </span><span style=' font-weight: bold;'>Fecha</span><span>:  11 de marzo 2022</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Profesor</span><span>: Alexandre Janiak    Ayudante: Pablo Vega</span></div><h2  class = 'S2'><span>3.1 Introducción a Matlab</span></h2><div  class = 'S1'><span>He sido contratada por una empresa encargada de llevar las estadísticas de la cadena de supermercados </span><span style=' font-style: italic;'>Matjobs, </span><span>por lo cual se  me encomendaron la tarea de estudiar el </span><span style=' font-weight: bold;'>comportamiento de los clientes</span><span> dentro del supermercado, específicamente de los tiempos en ingresos, búsqueda de productos y el pago. </span></div><div  class = 'S1'><span>A partir de una muestra de 1.000 personas que asistieron todos los días del mes de abril (30 días) a </span><span style=' font-style: italic;'>Matjobs,</span><span> he logrado obtener la distribución de los principales flujos del supermercado (medidas en minutos).</span></div><div  class = 'S1'><span>0. Limpiar espacio de trabajo</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >clc</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >clear</span></span></div></div></div><div  class = 'S5'><span>1. Parámetros </span></div><div  class = 'S1'><span>Prealocaremos algunas variables. Luego contruiremos la distribución de las variables de interés.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >i = 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >t = 30;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >r = i*t;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >c = 1;</span></span></div></div></div><div  class = 'S5'><span style=' font-weight: bold;'>Ingreso (I)</span></div><div  class = 'S1'><span>I ~ exp(2)</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >I = exp(2) + rand(r,c)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="3EEC55D6" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_0" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">I = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">30000×1</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:1,&quot;totalRows&quot;:30000,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 68px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    8.2902
+    7.6570
+    7.4332
+    7.4030
+    7.5826
+    8.0917
+    8.1675
+    7.3900
+    8.0793
+    8.3506
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div></div></div></div><div  class = 'S5'><span style=' font-weight: bold;'>Búsqueda (B)</span></div><div  class = 'S1'><span>B ~ N(0.3,1)</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >B = randn(r,c)*0.3+1</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="0CC35338" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_1" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">B = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">30000×1</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:1,&quot;totalRows&quot;:30000,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 68px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    0.7944
+    0.8308
+    1.1768
+    1.5342
+    1.4045
+    1.0589
+    0.8879
+    0.8224
+    0.8982
+    1.4844
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div></div></div></div><div  class = 'S5'><span style=' font-weight: bold;'>Pago (P)</span></div><div  class = 'S1'><span>P ~ N(0.15,0.2)</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >P = randn(r,c)*0.15+0.2</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="47753196" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_2" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">P = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">30000×1</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:1,&quot;totalRows&quot;:30000,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 68px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    0.3957
+    0.1593
+    0.2059
+   -0.2176
+    0.3037
+    0.2292
+    0.1420
+    0.1293
+    0.1475
+    0.0107
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div></div></div></div><div  class = 'S5'><span>Por definición, se establece que la suma de los tiempos de </span><span style=' font-style: italic;'>ingreso, búsqueda y pago</span><span> corresponde al tiempo total dentro del supermercado. </span></div><h2  class = 'S2'><span>El ejercicio incluye que </span></h2><div  class = 'S1'><span>(a) Utilizando loops he creado una matriz TL que contiene como fila a cada cliente y como columna el tiempo total de compra del mismo cliente para cada día del mes de abril. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(51, 204, 0);">% Preallocate matrix</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >TL = zeros(r, 4); </span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >T = I + B + P; </span><span style="color: rgb(51, 204, 0);">% Crear fila total</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(51, 204, 255);">for </span><span >col = 1:4</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    vars = [I B P T];</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    TL(:,col) = vars(:,col);</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(51, 204, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'></div></div></div><div  class = 'S5'><span>(b) Obtenga la misma matriz del ítem anterior pero de forma matricial. Nombre esta matriz TM. </span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >TM = [I B P T]</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="C5DDAE8E" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_3" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">TM = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">30000×4</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:4,&quot;totalRows&quot;:30000,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 266px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    8.2902    0.7944    0.3957    9.4803
+    7.6570    0.8308    0.1593    8.6471
+    7.4332    1.1768    0.2059    8.8160
+    7.4030    1.5342   -0.2176    8.7196
+    7.5826    1.4045    0.3037    9.2908
+    8.0917    1.0589    0.2292    9.3799
+    8.1675    0.8879    0.1420    9.1974
+    7.3900    0.8224    0.1293    8.3417
+    8.0793    0.8982    0.1475    9.1250
+    8.3506    1.4844    0.0107    9.8458
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div></div></div></div><div  class = 'S5'><span>Comprobamos que ambas matrices son iguales</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span > </span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(51, 204, 255);">if </span><span >isequal(TL,TM) == 1</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    disp(</span><span style="color: rgb(185, 105, 224);">'Las matrices son iguales'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(51, 204, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    disp(</span><span style="color: rgb(185, 105, 224);">'No son iguales las matrices'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(51, 204, 255);">end</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="ABCC4C10" data-scroll-top="null" data-scroll-left="null" data-testid="output_4" style="width: 938px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement eoOutputContent" data-width="908" data-height="18" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Las matrices son iguales</div></div></div></div></div><div  class = 'S5'><span>(c) Identifique al individuo que más tiempo tardó en completar el proceso de compra y compute dicho tiempo</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >max(TM(:,4))</span></span></div><div  class = 'S8'><div class='variableElement' style='font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px; '>ans = 10.7353</div></div></div></div><div  class = 'S5'><span>(d) Identifique al individuo que menos tiempo tardó en completar el proceso de compra y compute dicho tiempo</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >disp([</span><span style="color: rgb(185, 105, 224);">'El individuo que tardó más, tardó en total '</span><span >,num2str(max(TM(:,4))),</span><span style="color: rgb(185, 105, 224);">' minutos. Su posición en la muestra es '</span><span >, num2str(find(TM == max(TM(:,4))))])   </span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="7BC2557D" data-scroll-top="null" data-scroll-left="null" data-testid="output_6" style="width: 938px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement eoOutputContent" data-width="908" data-height="18" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">El individuo que tardó más, tardó en total 10.7353 minutos. Su posición en la muestra es 100347</div></div></div></div></div><div  class = 'S5'><span>(e) Cree la función </span><span style=' font-weight: bold;'>test</span><span> que recibe como inputs el número de personas y la cantidad de días que asistió a comprar y que entrega como </span><span style=' font-weight: bold;'>outputs</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >clc</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >clear</span></span></div></div></div><div  class = 'S5'><span>La función </span><span style=' font-weight: bold;'>test.m permite calcular lo siguiente. </span><span>Para el punto 1, 2 y 4, se puede extraer como resultante. Mientras que para 3 y 5 aparece un output de resumen de esta información (junto con 2 y 4 respectivamente)    </span></div><div  class = 'S1'><span>(1) un vector columna VL que contiene el tiempo total de compra de cada persona obtenido a través de un loop</span></div><div  class = 'S1'><span>(2) la persona que más pasó tiempo comprando</span></div><div  class = 'S1'><span>(3) el tiempo asociado a esa persona</span></div><div  class = 'S1'><span>(4) la persona que menos tiempo pasó comprando</span></div><div  class = 'S1'><span>(5) el tiempo asociado a esa persona </span></div><div  class = 'S1'><span>Si se quiere saber como ocupar </span><span style=' font-weight: bold;'>test</span><span> deben poner help test. Se ha creado una ayuda para poder ocuparla. Imaginemos que al supermercado asistieron 2 personas durante 4 días.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >test(2,4)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="2C5D1C54" data-scroll-top="null" data-scroll-left="null" data-testid="output_7" style="width: 938px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement eoOutputContent" data-width="908" data-height="33" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">El individuo que tardó más, tardó en total 9.6205 minutos. Su posición en la muestra es la posición 6
+El individuo que tardó memnos, tardó en total 8.4622 minutos. Su posición en la muestra es la posición 5</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="5B450287" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_8" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">8×1</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:1,&quot;totalRows&quot;:8,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 68px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    9.1062
+    9.3308
+    9.3709
+    8.5929
+    8.4622
+    9.6205
+    8.7142
+    9.0103
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div></div></div></div><div  class = 'S5'><span>Como se puede obtener, tenemos como output una guía que nos dice al inicio los mínimos y maximos, y las posiciones. Además nos muestra la matriz VL contruida. Para poder guardar estos objetos en el espacio de trabajo lo hacemos de la siguiente manera</span></div><div  class = 'S1'><span style=' font-weight: bold;'>[VL,maxT,minT] = test(i,t)</span></div><div  class = 'S1'><span>Por ejemplo, </span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >[VL,maxT,minT] = test(2,4)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="B9F1F2FC" data-scroll-top="null" data-scroll-left="null" data-testid="output_9" style="width: 938px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement eoOutputContent" data-width="908" data-height="33" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">El individuo que tardó más, tardó en total 9.481 minutos. Su posición en la muestra es la posición 3
+El individuo que tardó memnos, tardó en total 8.3629 minutos. Su posición en la muestra es la posición 7</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsVariableMatrixElement" uid="E228B403" data-scroll-top="null" data-scroll-left="null" data-width="908" data-testid="output_10" style="width: 938px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="matrixElement veSpecifier eoOutputContent" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="veVariableName variableNameElement double" style="width: 908px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="headerElementClickToInteract" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">VL = </span><span class="veVariableValueSummary veMetaSummary" style="white-space: normal; font-style: normal; color: rgb(179, 179, 179); font-size: 12px;">8×1</span></div></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:66,&quot;totalColumns&quot;:1,&quot;totalRows&quot;:8,&quot;charsPerColumn&quot;:10}" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="variableValue" style="width: 68px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    8.4098
+    8.6108
+    9.4810
+    9.1623
+    8.5360
+    8.8300
+    8.3629
+    9.2468
+</div><div class="horizontalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div><div class="verticalEllipsis hide" style="white-space: nowrap; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"></div></div></div></div><div class='variableElement' style='font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px; '>maxT = 9.4810</div><div class='variableElement' style='font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px; '>minT = 8.3629</div></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Seguimiento N° 1
+% *Teoría Macroeconómica I* 
+% 
+% *Estudiante*: Valentina Andrade de la Horra                 *Fecha*:  11 de 
+% marzo 2022
+% 
+% *Profesor*: Alexandre Janiak    Ayudante: Pablo Vega
+%% 3.1 Introducción a Matlab
+% He sido contratada por una empresa encargada de llevar las estadísticas de 
+% la cadena de supermercados _Matjobs,_ por lo cual se  me encomendaron la tarea 
+% de estudiar el *comportamiento de los clientes* dentro del supermercado, específicamente 
+% de los tiempos en ingresos, búsqueda de productos y el pago. 
+% 
+% A partir de una muestra de 1.000 personas que asistieron todos los días del 
+% mes de abril (30 días) a _Matjobs,_ he logrado obtener la distribución de los 
+% principales flujos del supermercado (medidas en minutos).
+% 
+% 0. Limpiar espacio de trabajo
+
+clc
+clear
+%% 
+% 1. Parámetros 
+% 
+% Prealocaremos algunas variables. Luego contruiremos la distribución de las 
+% variables de interés.
+
+i = 1000;
+t = 30;
+r = i*t;
+c = 1;
+%% 
+% *Ingreso (I)*
+% 
+% I ~ exp(2)
+
+I = exp(2) + rand(r,c)
+%% 
+% *Búsqueda (B)*
+% 
+% B ~ N(0.3,1)
+
+B = randn(r,c)*0.3+1
+%% 
+% *Pago (P)*
+% 
+% P ~ N(0.15,0.2)
+
+P = randn(r,c)*0.15+0.2
+%% 
+% Por definición, se establece que la suma de los tiempos de _ingreso, búsqueda 
+% y pago_ corresponde al tiempo total dentro del supermercado. 
+%% El ejercicio incluye que 
+% (a) Utilizando loops he creado una matriz TL que contiene como fila a cada 
+% cliente y como columna el tiempo total de compra del mismo cliente para cada 
+% día del mes de abril. 
+
+% Preallocate matrix
+TL = zeros(r, 4); 
+T = I + B + P; % Crear fila total
+for col = 1:4
+    vars = [I B P T];
+    TL(:,col) = vars(:,col);
+end
+
+%% 
+% (b) Obtenga la misma matriz del ítem anterior pero de forma matricial. Nombre 
+% esta matriz TM. 
+
+TM = [I B P T]
+%% 
+% Comprobamos que ambas matrices son iguales
+
+ 
+if isequal(TL,TM) == 1
+    disp('Las matrices son iguales')
+else
+    disp('No son iguales las matrices')
+end
+%% 
+% (c) Identifique al individuo que más tiempo tardó en completar el proceso 
+% de compra y compute dicho tiempo
+
+max(TM(:,4))
+%% 
+% (d) Identifique al individuo que menos tiempo tardó en completar el proceso 
+% de compra y compute dicho tiempo
+
+disp(['El individuo que tardó más, tardó en total ',num2str(max(TM(:,4))),' minutos. Su posición en la muestra es ', num2str(find(TM == max(TM(:,4))))])   
+%% 
+% (e) Cree la función *test* que recibe como inputs el número de personas y 
+% la cantidad de días que asistió a comprar y que entrega como *outputs*
+
+clc
+clear
+%% 
+% La función *test.m permite calcular lo siguiente.* Para el punto 1, 2 y 4, 
+% se puede extraer como resultante. Mientras que para 3 y 5 aparece un output 
+% de resumen de esta información (junto con 2 y 4 respectivamente)    
+% 
+% (1) un vector columna VL que contiene el tiempo total de compra de cada persona 
+% obtenido a través de un loop
+% 
+% (2) la persona que más pasó tiempo comprando
+% 
+% (3) el tiempo asociado a esa persona
+% 
+% (4) la persona que menos tiempo pasó comprando
+% 
+% (5) el tiempo asociado a esa persona 
+% 
+% Si se quiere saber como ocupar *test* deben poner help test. Se ha creado 
+% una ayuda para poder ocuparla. Imaginemos que al supermercado asistieron 2 personas 
+% durante 4 días.
+
+test(2,4)
+%% 
+% Como se puede obtener, tenemos como output una guía que nos dice al inicio 
+% los mínimos y maximos, y las posiciones. Además nos muestra la matriz VL contruida. 
+% Para poder guardar estos objetos en el espacio de trabajo lo hacemos de la siguiente 
+% manera
+% 
+% *[VL,maxT,minT] = test(i,t)*
+% 
+% Por ejemplo, 
+
+[VL,maxT,minT] = test(2,4)
+##### SOURCE END #####
+-->
+</div></body></html>
