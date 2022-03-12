@@ -10,19 +10,19 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
 # Seguimientos
 
 - [Seguimiento N°1- 2022](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1/seguimiento1.html)
-  - [Live coding](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1/seguimiento1.mlx)
-  - [Función](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1/test.m)
-  - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1/seguimiento1.pdf)
-  - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1.mlx)
+  - [Live coding](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.mlx)
+  - [Función](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/test.m)
+  - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.pdf)
+  - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1.mlx)
 
 ## Material anterior
 
-- [Seguimiento N°2 - 2021](https://valentinaandrade.github.io/macroeconomics-theory/ayu2/seguimiento2.html)
-- [Seguimiento N°3 - 2021](https://valentinaandrade.github.io/macroeconomics-theory/ayu3/ayu3.pdf)
+- [Seguimiento N°2 - 2021](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2/seguimiento2.html)
+- [Seguimiento N°3 - 2021](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu3/ayu3.pdf)
 
 
 # Material de clases
-- [Dynamic Programming - Summary](https://valentinaandrade.github.io/macroeconomics-theory/ayu3/dp-intro.pdf)
+- [Dynamic Programming - Summary](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu3/dp-intro.pdf)
 
 
 
