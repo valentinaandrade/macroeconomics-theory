@@ -1,0 +1,380 @@
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and export to LaTeX again.
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{epstopdf}
+\usepackage[table]{xcolor}
+\usepackage{matlab}
+
+\sloppy
+\epstopdfsetup{outdir=./}
+\graphicspath{ {./seguimiento1_images/} }
+
+\begin{document}
+
+\matlabtitle{Seguimiento N° 1}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Teoría Macroeconómica I }
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Estudiante}: Valentina Andrade de la Horra                 \textbf{Fecha}:  11 de marzo 2022
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Profesor}: Alexandre Janiak    Ayudante: Pablo Vega
+\end{flushleft}
+\end{par}
+
+\matlabheading{3.1 Introducción a Matlab}
+
+\begin{par}
+\begin{flushleft}
+He sido contratada por una empresa encargada de llevar las estadísticas de la cadena de supermercados \textit{Matjobs, }por lo cual se  me encomendaron la tarea de estudiar el \textbf{comportamiento de los clientes} dentro del supermercado, específicamente de los tiempos en ingresos, búsqueda de productos y el pago. 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+A partir de una muestra de 1.000 personas que asistieron todos los días del mes de abril (30 días) a \textit{Matjobs,} he logrado obtener la distribución de los principales flujos del supermercado (medidas en minutos).
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+0. Limpiar espacio de trabajo
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+clc
+clear
+\end{matlabcode}
+
+\begin{par}
+\begin{flushleft}
+1. Parámetros 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Prealocaremos algunas variables. Luego contruiremos la distribución de las variables de interés.
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+i = 1000;
+t = 30;
+r = i*t;
+c = 1;
+\end{matlabcode}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Ingreso (I)}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+I \textasciitilde{} exp(2)
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+I = exp(2) + rand(r,c)
+\end{matlabcode}
+\begin{matlaboutput}
+I = 30000x1    
+    8.2902
+    7.6570
+    7.4332
+    7.4030
+    7.5826
+    8.0917
+    8.1675
+    7.3900
+    8.0793
+    8.3506
+
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Búsqueda (B)}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+B \textasciitilde{} N(0.3,1)
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+B = randn(r,c)*0.3+1
+\end{matlabcode}
+\begin{matlaboutput}
+B = 30000x1    
+    0.7944
+    0.8308
+    1.1768
+    1.5342
+    1.4045
+    1.0589
+    0.8879
+    0.8224
+    0.8982
+    1.4844
+
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Pago (P)}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+P \textasciitilde{} N(0.15,0.2)
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+P = randn(r,c)*0.15+0.2
+\end{matlabcode}
+\begin{matlaboutput}
+P = 30000x1    
+    0.3957
+    0.1593
+    0.2059
+   -0.2176
+    0.3037
+    0.2292
+    0.1420
+    0.1293
+    0.1475
+    0.0107
+
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+Por definición, se establece que la suma de los tiempos de \textit{ingreso, búsqueda y pago} corresponde al tiempo total dentro del supermercado. 
+\end{flushleft}
+\end{par}
+
+\matlabheading{El ejercicio incluye que }
+
+\begin{par}
+\begin{flushleft}
+(a) Utilizando loops he creado una matriz TL que contiene como fila a cada cliente y como columna el tiempo total de compra del mismo cliente para cada día del mes de abril. 
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+% Preallocate matrix
+TL = zeros(r, 4); 
+T = I + B + P; % Crear fila total
+for col = 1:4
+    vars = [I B P T];
+    TL(:,col) = vars(:,col);
+end
+
+\end{matlabcode}
+
+\begin{par}
+\begin{flushleft}
+(b) Obtenga la misma matriz del ítem anterior pero de forma matricial. Nombre esta matriz TM. 
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+TM = [I B P T]
+\end{matlabcode}
+\begin{matlaboutput}
+TM = 30000x4    
+    8.2902    0.7944    0.3957    9.4803
+    7.6570    0.8308    0.1593    8.6471
+    7.4332    1.1768    0.2059    8.8160
+    7.4030    1.5342   -0.2176    8.7196
+    7.5826    1.4045    0.3037    9.2908
+    8.0917    1.0589    0.2292    9.3799
+    8.1675    0.8879    0.1420    9.1974
+    7.3900    0.8224    0.1293    8.3417
+    8.0793    0.8982    0.1475    9.1250
+    8.3506    1.4844    0.0107    9.8458
+
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+Comprobamos que ambas matrices son iguales
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+ 
+if isequal(TL,TM) == 1
+    disp('Las matrices son iguales')
+else
+    disp('No son iguales las matrices')
+end
+\end{matlabcode}
+\begin{matlaboutput}
+Las matrices son iguales
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+(c) Identifique al individuo que más tiempo tardó en completar el proceso de compra y compute dicho tiempo
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+max(TM(:,4))
+\end{matlabcode}
+\begin{matlaboutput}
+ans = 10.7353
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+(d) Identifique al individuo que menos tiempo tardó en completar el proceso de compra y compute dicho tiempo
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+disp(['El individuo que tardó más, tardó en total ',num2str(max(TM(:,4))),' minutos. Su posición en la muestra es ', num2str(find(TM == max(TM(:,4))))])   
+\end{matlabcode}
+\begin{matlaboutput}
+El individuo que tardó más, tardó en total 10.7353 minutos. Su posición en la muestra es 100347
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+(e) Cree la función \textbf{test} que recibe como inputs el número de personas y la cantidad de días que asistió a comprar y que entrega como \textbf{outputs}
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+clc
+clear
+\end{matlabcode}
+
+\begin{par}
+\begin{flushleft}
+La función \textbf{test.m permite calcular lo siguiente. }Para el punto 1, 2 y 4, se puede extraer como resultante. Mientras que para 3 y 5 aparece un output de resumen de esta información (junto con 2 y 4 respectivamente)    
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+(1) un vector columna VL que contiene el tiempo total de compra de cada persona obtenido a través de un loop
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+(2) la persona que más pasó tiempo comprando
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+(3) el tiempo asociado a esa persona
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+(4) la persona que menos tiempo pasó comprando
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+(5) el tiempo asociado a esa persona 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Si se quiere saber como ocupar \textbf{test} deben poner help test. Se ha creado una ayuda para poder ocuparla. Imaginemos que al supermercado asistieron 2 personas durante 4 días.
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+test(2,4)
+\end{matlabcode}
+\begin{matlaboutput}
+El individuo que tardó más, tardó en total 9.6205 minutos. Su posición en la muestra es la posición 6
+El individuo que tardó memnos, tardó en total 8.4622 minutos. Su posición en la muestra es la posición 5
+ans = 8x1    
+    9.1062
+    9.3308
+    9.3709
+    8.5929
+    8.4622
+    9.6205
+    8.7142
+    9.0103
+
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+Como se puede obtener, tenemos como output una guía que nos dice al inicio los mínimos y maximos, y las posiciones. Además nos muestra la matriz VL contruida. Para poder guardar estos objetos en el espacio de trabajo lo hacemos de la siguiente manera
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{[VL,maxT,minT] = test(i,t)}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Por ejemplo, 
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+[VL,maxT,minT] = test(2,4)
+\end{matlabcode}
+\begin{matlaboutput}
+El individuo que tardó más, tardó en total 9.481 minutos. Su posición en la muestra es la posición 3
+El individuo que tardó memnos, tardó en total 8.3629 minutos. Su posición en la muestra es la posición 7
+VL = 8x1    
+    8.4098
+    8.6108
+    9.4810
+    9.1623
+    8.5360
+    8.8300
+    8.3629
+    9.2468
+
+maxT = 9.4810
+minT = 8.3629
+\end{matlaboutput}
+
+\end{document}
