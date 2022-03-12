@@ -9,7 +9,7 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
 
 # Seguimientos
 
-- [Seguimiento N°1- 2022](https://valentinaandrade.github.io/macroeconomics-theory/ayudantias/ayu1/seguimiento1.html)
+- [Seguimiento N°1- 2022](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.html)
   - [Live coding](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.mlx)
   - [Función](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/test.m)
   - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.pdf)
