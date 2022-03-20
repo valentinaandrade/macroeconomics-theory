@@ -20,7 +20,7 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
   - [Función](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu-2022/intnewton.m)
   - [Función para imagen](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu-2022/fignewton.m)
   - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu-2022/seguimiento2.pdf)
-  - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu/ayu2.mlx)
+  - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu/seguimiento2.html)
 
 ## Material anterior
 
