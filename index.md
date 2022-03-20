@@ -15,6 +15,13 @@ Todos los códigos, proyectos y funciones creadas pueden ser descargadas en el [
   - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1/seguimiento1.pdf)
   - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu1.mlx)
 
+- [Seguimiento N°2- 2022](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2-2022/seguimiento2.html)
+  - [Live coding](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2-2022/seguimiento2.mlx)
+  - [Función](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2-2022/intnewton.m)
+  - [Función para imagen](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2-2022/fignewton.m)
+  - [Documento en latex](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2-2022/seguimiento2.pdf)
+  - [Material de ayudantía](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2/ayu2.mlx)
+
 ## Material anterior
 
 - [Seguimiento N°2 - 2021](https://valentinaandrade.github.io/macroeconomics-theory/practice/ayudantias/ayu2/seguimiento2.html)
