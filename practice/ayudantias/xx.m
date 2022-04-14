@@ -1,4 +1,4 @@
-function [xx] = xx(r,c)
+function [y] = xx(r,c)
 % Esta funcion construye una matriz en base a variables aleatorias
 % definidas por el usuario donde podemos notar que
 % [xx] = xx(r,c) indica la construccion de una matriz donde

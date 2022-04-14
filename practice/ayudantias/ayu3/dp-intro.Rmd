@@ -11,7 +11,6 @@ header-includes:
 - \usepackage{titling}
 - \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{../../../docs/logo/logo-ie-uc.png}\\[\bigskipamount]}
 - \posttitle{\end{center}}
-- !expr system.file("includes/fig-valign.tex", package = "summarytools")
 - \usepackage{booktabs}
 - \usepackage{amsmath}
 - \usepackage{longtable}
@@ -35,7 +34,6 @@ output:
     toc: yes
   html_document:
     highlight: tango
-bibliography: "https://github.com/nicolasrattor/formatos/raw/main/Formato%20pdf%20uc/input/bib/bib.bib"
 linkcolor: red
 urlcolor: blue
 link-citations: yes
@@ -61,7 +59,7 @@ Eventualmente pensaremos que la gente decide consumir todo el trozo de torta, pe
 
 **Step 1**. Assumptions
 
-1. [INADA](#inada): Cake consumption value as $u(c)$, $u$ is concave $u'(c) > 0$, increasing ($u''(c) < 0$), differentiable and $\lim_{c \to 0} u'(c) = \infty$
+1. [INADA](#inada): Cake consumption value as $u(c)$, $u$ is increasing $u'(c) > 0$, concave ($u''(c) < 0$), differentiable and $\lim_{c \to 0} u'(c) = \infty$
 
 
 2. Lifetime utility is 
@@ -529,7 +527,126 @@ v(s) = \max{s' \epsilon \Gamma (s)} u(s,s') + \beta v (s')
 **Theorem**
 Assume that $u(s,s')$ is real-valued, continuos, and bounded, that $\beta \epsilon (0,1)$, and te constraint set $\Gamma(s)$ is *nonempty, compact and continuos*.Then there exists a unique function $v(s)$ that solves \ref{theorem46} (Stokey and Lucas, 1989, theorem 4.6 + Theorem of the Maximum)
 
+
 # Stochastic Dynamic Programming
+
+There are several ways to include uncertainty into this framework. Let's assume the existence of a variable $\epsilon$, representing a *shock*.
+
+Assumptions:
+
+1. $\epsilon_t$ affects the agent's payoff in period $t$
+
+2. $\epsilon_t$  is exogenous: the agent cannot influence it.
+
+3. $\epsilon_t$ depends only on $\epsilon_{t-1}$ (and not on $\epsilon_{t-2}$ although we could add $\epsilon_{t-1}$ as a state variable)
+
+4. The distribution of $\epsilon'|\epsilon $ is time-invariant. 
+
+Defined this assumptions in this way, we call $\epsilon$ a **first order Markow process**
+
+
+## The Markow Property
+
+**Definition** A stochastic process {$x_t$} is sait to have *Markov property* if for all $k \geq 1$ and all *t*, que have this property to {$\epsilon_t$}: 
+
+$$Pr(x_{t+1}|x_t,x{t-1},...,x_{t-k}) = Pr(x_{t+1}|x_t)$$
+This property is characterize by a **Markov Chain**
+
+A **Markov Chain** consist in a time-invariant state. More formally a **n-state Markov Chain** consist of:
+
+1. *n* vector of size (*n*,1): $e_i,i = 1, ...,n$ such that the $i-th$ entry of $e_i$ is one and all others zero,
+
+2. one (*n*,*n*) **transition matrix** P, giving the probability of probability of moving from state $i$ to state $j$, and
+
+3. a vector $\pi_{0i} = Pr(x= e_i)$ holding the probability of being in state $i$ at time 0. 
+
+- $e_1 = [1 0  ... 0]'$,  $e_2 = [0 1 ... 0]'$, ... are just a way of a saying "$x$ is in state $i$". 
+
+- The elements of $P$ are
+
+$$P_{ij} = Pr (x_{t+1} = e_j| x_t = e_i)$$
+
+## Assumptions on P and /pi_o
+
+$P$ is a stochastic matrix, where each row sums to one. Row $i$ has probabilities to move any possible state $j$. Remember that a valid probability distribution must to one. Also, P defines the probabilities of moving from **current state $i$ to future state $j$**. Finally  $\pi_o$ is a valid initial probability distribution
+
+
+1. For $i = 1,...,n$ the matrix $P$ satisfies
+
+$$\sum^n_{j=1} P_{ij} = 1$$
+
+2. The vector $\pi_o$ satisfies
+
+$$\sum^n_{i=1} \pi_{0i} = 1$$
+
+## Transition over two periods
+
+The probability to ove from $i$ to $j$ over two periods is given by $P^2_{ij}$. The reason is
+
+$$Pr(x_{t+2} = e_j| x_t = e_i)$$
+$$\sum^n_{h=1} Pr(x_{t+2} = e_j| x_{t+1} = e_h) \cdot Pr(x_{t+1} = e_h | x_{t+1} = e_i)$$
+$$\sum^n_{h=1} P_{ih} \cdot P_{hj} = P^2_{ij}$$
+
+## Conditional Expectation from Markov Chain
+
+Conditional expectation is an importan operator in our problem. The question is *Wht is the expected value of $x_{t+1}$ given $x_t = e_i$*. The answer is the following
+
+$$E[x_{t+1}| x_t = e_j] = values~of ~x ~Prob~ of~ those~ values$$
+$$= \sum^n_{j=1} e_j \cdot Pr(x_{t+1} = e_j|e_i)$$
+$$[x_1 x_2 ... x_n] (P_i)'$$
+
+where $P_i$ is the $i-th$ row of P, and $(P_i)'$ is the transpose of that row (i.e. a column vector)
+
+In this problem we have the condition expectation of a function (**value function**). We can notice the result is the same. 
+
+## Stochastic Dinamic Programming
+
+Now we know something about Makov Chains, we can write
+
+\begin{equation}
+v_({s, \epsilon}) = \max{S' \epsilon [s, \epsilon]} u(s, s', \epsilon) + \beta (v(s',\epsilon')|\epsilon)
+\end{equation}
+
+If $u(s, s', \epsilon)$ is **real-valued, continuos,concave and bounded** and if $\beta \epsilon (0,1)$ and constrain set is compact and convex, then: 
+
+1. there exist a **unique value function** $v(s,\epsilon)$ that solves the problem.
+
+2. there exists a stationary **policy function** $\phi(s,\epsilon)$
+
+### Proof
+This is a direct application of suddiciency conditions[^black]
+
+1. with $\beta < 1 $ discounting hold for the operator on the problem
+
+2. Monotonicity can be established as before. 
+
+Now we can derive the first order conditions ($\frac{\partial}{\partial s}$)
+
+$$u'(s, s', \epsilon) + \beta (V'(s',\epsilon')|\epsilon) = 0$$
+
+[^black]: Blackwell's suffiency conditions
+
+The result to differentiating and find $V'(s',\epsilon')$
+
+$$u'(s, s', \epsilon) + \beta (u'(s', s'',\epsilon')|\epsilon) = 0$$
+
+We will now solve the deterministic growth model with dynamic programming. 
+
+**Remember**:
+
+$$V(k) \max_{c=f(k) - k' \geq 0}  u(c) + \beta V(k')$$
+
+If we will assume $f(k) ) k^\alpha, u(c) = \ln(c)$, discrete state of dinamic programming to know $V$. This finite set of points are called **grid**. The steps are the following
+
+$$V(k) \max_{k'\epsilon k^\alpha }  ln(k^\alpha - k')  + \beta V(k')$$
+
+1. Discretize $V$ onto a **grid** of *n* points $ K = {k_1, k_2, ..., k_n}$
+
+2. Discretize variable control $k'$: we change the control variable from $k' \epsilon [0, k^\alpha ]~to~ [0, K ]$, i.e choose $k'$ from the discrete **grid**.
+
+3. Guess an initial function of $V_o(k)$
+
+4. Iterate on the equation **util** the distance $d(V' - V) < \epsilon$, where $\epsilon > 0$ is the tolerance choosen. 
 
 # References
 

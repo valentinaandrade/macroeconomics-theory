@@ -1,1 +1,2 @@
-[c1, c2] = function utility
+[c1, c2] = function utility()
+end
