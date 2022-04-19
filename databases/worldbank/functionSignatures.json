@@ -1,0 +1,150 @@
+{
+"_schemaVersion":"1.0.0",
+
+"_methods":[
+    "wb.isconnection",
+    "wb.getSources",
+    "wb.getConcepts",
+    "wb.getConceptVariables",
+    "wb.query",
+    "wb.header",
+    "wb.send",
+    "wb.close",
+    "wb.importdataset",
+    "wb.aggregate",
+    "wb.topic",
+    "wb.country",
+    "wb.indicator"
+    ],
+ 
+"wb.isconnection":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"}
+    ]
+},
+
+"wb.getSources":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"id", "type":"choices=completion(c,'getSources')"}
+    ]
+},
+
+"wb.getConcepts":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"source", "type":["choices=completion(c,'getConcepts')","char"]},
+        {"name":"concept", "type":"choices=completion(c,'getConcepts',source)"}
+    ]
+},
+
+"wb.getConceptVariables":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"source", "kind":"required", "type":"choices=completion(c,'getConceptVariables')"},
+        {"multiplicity":"append", "tuple":
+            [
+                {"name":"concept", "type":"choices=completion(c,'getConceptVariables',source)"},
+                {"name":"variable", "type":"choices=horzcat(completion(c,'getConceptVariables',source,concept),'all')"}
+            ]}
+    ]
+},
+
+"wb.query":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"source", "kind":"required", "type":"choices=completion(c,'query')"},
+        {"name":"id", "kind":"required", "type":"choices=completion(c,'query',[])"},
+        {"multiplicity":"append", "tuple":
+            [
+                {"name":"concept", "type":"choices=completion(c,'query',[],id)"},
+                {"name":"variable", "type":"choices=horzcat(completion(c,'query',[],id,concept),'all')"}
+            ]}
+    ]
+},
+
+"wb.header":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"multiplicity":"append", "tuple":
+            [
+                {"name":"name", "type":"choices=fieldnames(header(c))"},
+                {"name":"value", "type":["char","scalar"]}
+            ]}
+    ]
+},
+
+"wb.send":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"req", "kind":"required", "type":["struct","scalar"]},
+        {"multiplicity":"append", "tuple":
+            [
+                {"name":"name", "type":[["choices=fieldnames(header(c))"],["char","scalar"]]},
+                {"name":"value", "type":["char","scalar"]}
+            ]}
+    ]
+},
+
+"wb.close":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"}
+    ]
+},
+
+"wb.importdataset":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"}
+    ]
+},
+
+"wb.aggregate":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"option", "kind":"required", "type":"choices=completion(c,'aggregate')"},
+        {"name":"val", "kind":"required", "type":"choices=completion(c,'aggregate',option)"}
+    ]
+},
+
+"wb.country":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"val", "kind":"required", "type":"choices=completion(c,'country')"}
+    ]
+},
+
+"wb.topic":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"val", "kind":"required", "type":"choices=completion(c,'topic')"}
+    ]
+},
+
+"wb.indicator":
+{
+	"inputs": [
+		{"name":"c", "kind":"required", "type":"wb"},
+        {"name":"indicator", "type":["choices=completion(c,'indicator')"]},
+        {"name":"source", "kind":"required", "type":"choices=completion(c,'indicator',[])"},
+        {"name":"id", "kind":"required", "type":"choices=completion(c,'indicator',[],[])"},
+        {"multiplicity":"append", "tuple":
+           [
+               {"name":"name", "type":["char","scalar"]},
+               {"name":"value", "type":["char","scalar"]}
+           ]}
+    ]
+}
+
+}

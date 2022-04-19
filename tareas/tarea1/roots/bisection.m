@@ -48,28 +48,26 @@ else
  % Preallocate 
     a0 = a;
     b0 = b;
-    r0 = (a0 + b0)/2;
-    fr0 = f(r0);
-    n= 1; % semilla iterativa
+    n= 100; % semilla iterativa
     epsilon = 0.05; % error semilla
 % Algoritmo biseccion     
 while epsilon > tol
   for n = 1:n+1
-    if f(a0)*fr0 < 0
-     a0 = a0;
-     b0 = r0;
-    elseif f(b0)*fr0 < 0
-     a0 = r0;
-     b0 = b0;
-    elseif fr0 == 0
-     disp('Solución exacta encontrada');
+      r0 = (a0 + b0)/2;
+    if f(a0)*f(r0) < 0
+        b0 = r0;
+    elseif f(b0)*f(r0) < 0
+        a0 = r0;
+    elseif f(r0) == 0
+     %disp('Solución exacta encontrada');
     else
      disp('Metodo de biseccion falla');
     end
     xn = (a0 + b0)/2;
     epsilon = (b0-a0)/2^(n+1);
-    end
+   end
 end
+ disp(['Solucion: ',num2str(xn),'  Error: ',num2str(epsilon)]) 
 end
 
    
