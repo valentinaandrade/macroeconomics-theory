@@ -1,4 +1,4 @@
-function [vt, gammat, lt_activos, lt_ahorro, lt_consumo, omega] = fisher(T, sigma, beta,r,gamma,liq)
+function [vt, gammat, lt_activos, lt_ahorro, lt_consumo, omega] = fisher(T, sigma, beta,r,liq)
 % Funcion que permite obtener el ciclo de vida economico del agente, con
 % horizonte finito
 % Input 
@@ -19,7 +19,7 @@ function [vt, gammat, lt_activos, lt_ahorro, lt_consumo, omega] = fisher(T, sigm
 % lt_consumo: trayectoria consumo
 
 % 0. Parametros fijos
-A = linspace(-15,25,1001)'; % Tienen como deuda maxima -15 y ahorro 25;
+A = linspace(-15,25,1001); % Tienen como deuda maxima -15 y ahorro 25;
 alpha = 1/3;
 delta = 0.1;
 w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
@@ -43,8 +43,8 @@ cota_inf = zeros(1,T+1); % Vector de deuda maxima. Se pone T+1 pues refiere a el
 % at+1 parte con cero y termina con cero
 % Queremos saber la deuda maxiima: Entonces si despejamos la restriccion de at,at+1 = 0, y ct=0 pues no va a
 % consumir nada entonces obtenemos lo de la linea 34
-for t = T:-1:1 % T entre T maximo hasta 1 con un espaciado de -1
-    cota_inf(t) = (cota_inf(t+1)-omega(t))/(1+r); %  Deuda maxima en cada periodo. Entonces si 
+for j = T:-1:1 % T entre T maximo hasta 1 con un espaciado de -1
+    cota_inf(j) = (cota_inf(j+1)-omega(j))/(1+r); %  Deuda maxima en cada periodo. Entonces si 
 end
 
 ponzi = sum(A<cota_inf(T))+1;
@@ -78,15 +78,13 @@ Ap = NaN(nmax,T);  % Correspondencia entre posición en la grilla A con grilla A
 Ap(rest_act:end,end)=sum(A<cota_inf(T+1))+1; %En último periodo la elección optima es siempre el menor nivel de capital posible, esto es 0.
 
 Ac = NaN(nmax,T);            % Activos
-Ac(rest_act:end,end)=A(Ap(rest_act:end,end))';%Policy de activos en t=70 es 0 por estructura del problema.
+Ac(rest_act:end,end)=A(Ap(rest_act:end,end));%Policy de activos en t=70 es 0 por estructura del problema.
+
 
 % Consumo
 %Consumo admisibles en el último periodo. (Recordar que a_70=0)
-%c_70 = gamma(70) + (1+r).*agrid; % en el ultimo periodo me lo como todo
-%c_70(c_70<0)=NaN;
-Cp = NaN(nmax,T); %Política de consumo, derivada de la eq. (3) de la tarea. 
-%Cp(:, end)=c_70; %La policy de consumo en el último periodo queda definida también por el hecho de que a_70=0
-%Cp(rest_act:end,T)=omega(T)+(1+r).*A(rest_act:end)-Ac(rest_act:end,end)'; %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
+Cp = NaN(nmax,T); %Política de consumo, derivada de la restriccion 
+Cp(rest_act:end,T)=omega(T)+(1+r).*A(rest_act:end)'-Ac(rest_act:end,end); %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
 
 
 % ------------------------------------------------------------------------
@@ -94,9 +92,9 @@ Cp = NaN(nmax,T); %Política de consumo, derivada de la eq. (3) de la tarea.
 % ------------------------------------------------------------------------
 tic
 for t = T-1:-1:1
-        ponzi_a = sum(A<cota_inf(T))+1;
+        ponzi_a = sum(A<cota_inf(t))+1;
         rest_act_a = max([ponzi_a, sum(A< -liq)+1]); % posicion de la deuda maxima en el periodo t de tal modo que muera sin deuda (se va rellenando lo que hicimos antes pero para cada t)
-        c = omega(t) + (1+r).*A(rest_act_a:end) - A(rest_act:end)'; % consumo fatible no es óptimo
+        c = omega(t) + (1+r).*A(rest_act_a:end)' - A(rest_act:end); % consumo fatible no es óptimo
         c(c<=0)=NaN; % se descartan consumos negativos 
         % la matriz resultante no es de 1001x1001 y es porque condicioné su deuda
         % esto lo hice por h_pos para descartar la deuda que no es factible
@@ -104,10 +102,10 @@ for t = T-1:-1:1
         vaux = crra(c,sigma) + beta*vt(rest_act:end,t+1)';  % cota_inf:end, t+1 (solo tomaremos la parte factible)
         % [  ] x*y  + [ ] 1*y
         [v,pos] = max(vaux,[],2); % entregar vector columna ese 2  donde v es el valor y p es la posicion de la value funcion 
-        vt(rest_act:end,t) = v; % Para guardar la value function dentro de la zona factible, para la posicion t
-        Ap(rest_act:end,t) = rest_act - 1 + pos;    % Posicion de activos al sumar cota_inf -1 es rescalar a la matriz pequeña 
-        Ac(rest_act:end,t) = A(rest_act - 1 + pos); % Valor de activos dado la posicion
-        Cp(rest_act:end,t) = omega(t) + (1+r).*A(rest_act:end) - A(rest_act- 1 + pos); % Cuando se despeja consumo
+        vt(rest_act_a:end,t) = v; % Para guardar la value function dentro de la zona factible, para la posicion t
+        Ap(rest_act_a:end,t) = rest_act - 1 + pos;    % Posicion de activos al sumar cota_inf -1 es rescalar a la matriz pequeña 
+        Ac(rest_act_a:end,t) = A(rest_act - 1 + pos); % Valor de activos dado la posicion
+        %Cp(rest_act_a:end,t) = omega(T)+(1+r).*A(rest_act:end)'-Ac(rest_act:end,end); % Cuando se despeja consumo
         rest_act = rest_act_a; % guardar la posicion anterior para en la linea 78 cuando se corre la funcion de valor que ya se calculo
 end
 toc
@@ -118,19 +116,20 @@ toc
 % Trayectorias relevantes, sabemos que a_1=0.
 
 % Activos - lt_act ------------------------------------------------------
-lt_activos_pos=NaN(1,T); % Vector que es fila de 1 hasta T Poner hasta el ultimo periodo
-lt_activos_pos(1)=sum(A<0)+1; % Posición en grilla activos donde encontramos el nivel de activos inicial (cero)
+pos_ini = sum(A<0) + 1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
+lt_activos=NaN(1,T+1); % Vector que es fila de 1 hasta T Poner hasta el ultimo periodo
+lt_activos(1)=A(pos_ini); % Posición en grilla activos donde encontramos el nivel de activos inicial (cero)
 
-for i = 2:T+1
-    lt_activos_pos(i) = Ap(lt_activos_pos(i-1),i-1);
+for i = 2:T
+    pos_activos_corr = Ap(pos_ini,i-1);
+    lt_activos(i) = A(pos_activos_corr);
+    pos_ini = pos_activos_corr;
 end
-
-lt_activos = A(lt_activos_pos)';
 
 % Consumo - lt_consumo ---------------------------------------------------
 % Se despeja la ecuacion que se obtiene para consumo
 % Se hace loop por tema con las dimensiones
-lt_consumo = omega(1:T) + (1+r).*lt_activos(1:T) - lt_activos(2:T+1); %Policy function consumption
+lt_consumo = omega(1:T) + lt_activos(1:T)*(1+r) - lt_activos(2:T+1); %Policy function consumption
 
 % Ahorro - lt_ahorro -----------------------------------------------------
 % Lo mismo para ahorro
