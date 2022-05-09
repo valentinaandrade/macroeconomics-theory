@@ -1,138 +1,103 @@
-function [vt, gammat, lt_activos, lt_ahorro, lt_consumo, omega] = fisher(T, sigma, beta,r,liq)
-% Funcion que permite obtener el ciclo de vida economico del agente, con
-% horizonte finito
-% Input 
-% ----------
-% T : horizonte de tiempo de agente
-% sigma: elasticidad intertemporal de sustitucion
-% beta: impaciencia
-% r: tasa de interes
-% gamma: trayectoria de ingreso
-% Output
-%------------
-% t: value function
-% Ac: decision optima de activos
-% Ap: posicion de activos
-% Cp: cosumo policy function
-% lt_act: trayectoria de activos
-% lt_ahorro: trayectoria de ahorros
-% lt_consumo: trayectoria consumo
+function [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_ahorro,gamma, y]=fisher(T,sigma,beta,r,b)
 
-% 0. Parametros fijos
-A = linspace(-15,25,1001); % Tienen como deuda maxima -15 y ahorro 25;
-alpha = 1/3;
-delta = 0.1;
+
+%Asset grid:
+A=linspace(-15,25,1001);
+alpha=1/3;
+delta=0.1;
 w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
 
-gammat=zeros(1,T);
-for i=1:T
-  gammat(i) = ((40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2)+1);
-  omega(i) = gammat(i)*w(r);
+z= @(x,mu,sig) 0.4 + 40 *exp(-( (log(x)-mu)/sig ).^2 /2 ) ./(x* sig*sqrt(2*pi));
+gamma = z(1:T, log(32.5), 0.4);
+y = gamma*w(r);
+
+% % Income
+% y=zeros(1,T);
+% for j=1:T
+%   gamma(j) = ((40/(0.4*j*(2*pi).^(1/2)))*exp((-1/2)*((log(j)-log(32.5))/0.4).^2))+1 ;
+%   y(j) = gamma(j)*w(r);
+% end
+
+
+%%Resolución numérica del problema del agente
+%Condición sobre el crédito impuesta por el hecho de que no puede morir
+%endeudado. Visto de otra manera, es una cota inferior a la policy de
+%activos que puede tomar el agente y corresponde al valor presente de los
+%ingresos futuros del individuo. 
+a_cota_inf=zeros(1,T+1);
+for j=T:-1:1
+    a_cota_inf(j)=(a_cota_inf(j+1)-y(j))/(1+r);
 end
 
-% -----------------------------------------------------------------------
-% 1 Restricciones
-%-----------------------------------------------------------------------
-% 1.1  Espacio de variables de estado ---------------------------------
-nmax = length(A);
-% Grilla activos discretizado. Niveles de riqueza posible que puede elegir el agente
-% 1.2 Aceso al credito  vector de puros
-% zeros--------------------------------------------------------------
-cota_inf = zeros(1,T+1); % Vector de deuda maxima. Se pone T+1 pues refiere a el último periodo 
-% T+1 morir sin deuda (no ponzi) y no pueda acceder a deuda en el ultimo periodo
-% at+1 parte con cero y termina con cero
-% Queremos saber la deuda maxiima: Entonces si despejamos la restriccion de at,at+1 = 0, y ct=0 pues no va a
-% consumir nada entonces obtenemos lo de la linea 34
-for j = T:-1:1 % T entre T maximo hasta 1 con un espaciado de -1
-    cota_inf(j) = (cota_inf(j+1)-omega(j))/(1+r); %  Deuda maxima en cada periodo. Entonces si 
-end
 
-ponzi = sum(A<cota_inf(T))+1;
-rest_act = max([ponzi, sum(A< -liq)+1]); %Posiciones en la grilla de activos desde la cual
-%está definida la VFunction_70 (a raíz de restricciones anteriores
+
+%Última columna es caso especial (sabemos que se consume todo), hacemos a mano:
+
+No_Ponzi=sum(A<a_cota_inf(T))+1; 
+Restr_Act=max([No_Ponzi, sum(A<-b)+1]);%Posiciones en la grilla de activos desde la cual
+%está definida la VFunction_65 (a raíz de restricciones anteriores
 %enfrentadas en t=64 sobre la policy a_65), tengo que quedarme con la más
 %exigente entre la restricción de liquidez y la restricción a no morir
 %endeudado, este es el cambio respecto al algoritmo de 1.1
 
-
-% Idea principal: %Condición sobre el crédito impuesta por el hecho de que no puede morir
-%endeudado. Visto de otra manera, es una cota inferior a la policy de
-%activos que puede tomar el agente y corresponde al valor presente de los
-%ingresos futuros del individuo. 
-
-% 1.3 Nace sin activos --------------------------------------------------
-% Se fija una "semilla" inicial sobre la posicion de un A que cumpla la
-% condicion de que A>=0, y si no se avanza en posicion 
-%cota_inf_a = sum(A<cota_inf(end)) + 1; %En último periodo la elección optima es siempre el menor nivel de capital posible, esto es 0.
-% (A<0) Si la grilla de activos es menor a 0, entonces devuelve un 1. Y así
-% avanza posición donde en la grilla de activos esta sobre cero
-% Duda: cota_inf(end) podria ser 0
-
-% Preallocation ----------------------------------------------------
-% Estas matrices preallocan matrices que después se van a *ir rellenando*
-vt = NaN(nmax,T+1); % Activos iniciales para cada periodo
-c_final=omega(T)+(1+r).*A(rest_act:end);%Consumo admisibles (es solo una opción, por ende también es un óptimo para cada nivel de activo) en el último periodo. (Recordar que a_77=0)
-vt(rest_act:end,T) = crra(c_final,sigma); 
-
-Ap = NaN(nmax,T);  % Correspondencia entre posición en la grilla A con grilla A, del nivel de capital que maximiza.
-Ap(rest_act:end,end)=sum(A<cota_inf(T+1))+1; %En último periodo la elección optima es siempre el menor nivel de capital posible, esto es 0.
-
-Ac = NaN(nmax,T);            % Activos
-Ac(rest_act:end,end)=A(Ap(rest_act:end,end));%Policy de activos en t=70 es 0 por estructura del problema.
+vt = NaN(length(A),T); %Aquí va la ValueFunction, cada columna es un periodo y cada fila corresponde a un nivel de activos inicial
+c_Final=y(T)+(1+r).*A(Restr_Act:end);%Consumo admisibles (es solo una opción, por ende también es un óptimo para cada nivel de activo) en el último periodo. (Recordar que a_66=0)
+vt(Restr_Act:end, T)=crra(c_Final, sigma);%Value function en último periodo.
 
 
-% Consumo
-%Consumo admisibles en el último periodo. (Recordar que a_70=0)
-Cp = NaN(nmax,T); %Política de consumo, derivada de la restriccion 
-Cp(rest_act:end,T)=omega(T)+(1+r).*A(rest_act:end)'-Ac(rest_act:end,end); %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
+Api = NaN(length(A),T); %Posición en la grilla donde encontramos el nivel de capital que maximiza (columna-periodo y fila-nivel de activo inicial).
+Api(Restr_Act:end,end)=sum(A<a_cota_inf(T+1))+1; %En último periodo la elección optima es siempre el menor nivel de capital posible, esto es 0.
+Apf = NaN(length(A),T); %Correspondencia entre posición en la grilla A con grilla A, del nivel de capital que maximiza.
+Apf(Restr_Act:end,end)=A(Api(Restr_Act:end,end));%Policy de activos en t=65 es 0 por estructura del problema.
+Cpf = NaN(length(A),T); %Política de consumo, derivada de la eq. (3) de la tarea. 
+Cpf(Restr_Act:end, T)=y(T)+(1+r)*A(Restr_Act:end)'-Apf(Restr_Act:end,end); %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
 
-
-% ------------------------------------------------------------------------
-%% 2. Rellenar grilla
-% ------------------------------------------------------------------------
+%Loop para rellenar columnas T-1 y hacia atrás.
 tic
-for t = T-1:-1:1
-        ponzi_a = sum(A<cota_inf(t))+1;
-        rest_act_a = max([ponzi_a, sum(A< -liq)+1]); % posicion de la deuda maxima en el periodo t de tal modo que muera sin deuda (se va rellenando lo que hicimos antes pero para cada t)
-        c = omega(t) + (1+r).*A(rest_act_a:end)' - A(rest_act:end); % consumo fatible no es óptimo
-        c(c<=0)=NaN; % se descartan consumos negativos 
-        % la matriz resultante no es de 1001x1001 y es porque condicioné su deuda
-        % esto lo hice por h_pos para descartar la deuda que no es factible
-        % y no morir endeudado 
-        vaux = crra(c,sigma) + beta*vt(rest_act:end,t+1)';  % cota_inf:end, t+1 (solo tomaremos la parte factible)
-        % [  ] x*y  + [ ] 1*y
-        [v,pos] = max(vaux,[],2); % entregar vector columna ese 2  donde v es el valor y p es la posicion de la value funcion 
-        vt(rest_act_a:end,t) = v; % Para guardar la value function dentro de la zona factible, para la posicion t
-        Ap(rest_act_a:end,t) = rest_act - 1 + pos;    % Posicion de activos al sumar cota_inf -1 es rescalar a la matriz pequeña 
-        Ac(rest_act_a:end,t) = A(rest_act - 1 + pos); % Valor de activos dado la posicion
-        %Cp(rest_act_a:end,t) = omega(T)+(1+r).*A(rest_act:end)'-Ac(rest_act:end,end); % Cuando se despeja consumo
-        rest_act = rest_act_a; % guardar la posicion anterior para en la linea 78 cuando se corre la funcion de valor que ya se calculo
+for t=T-1:-1:1
+    
+    No_Ponzi_a=sum(A<a_cota_inf(t))+1;
+    Restr_Act_a=max([No_Ponzi_a, sum(A<-b)+1]);%Posición en grilla de activos desde la cual está definida la VFunction
+    %(heredada de ayer) y es la más estricta entre la restr. de liquidez y
+    %la restricción de No_Ponzi(morir endeudado)
+    c=y(t)+(1+r)*A(Restr_Act_a:end)';%Consumo antes de policy de activos. 
+    c=c-A(Restr_Act:end);%Consumos posibles (columnas) para cada nivel inicial de capital (filas) permitido
+    c(c<=0)=NaN;%Condición de no negatividad sobre el consumo
+    
+    Vaux= crra(c,sigma)+beta*vt(Restr_Act:end,t+1)';
+    
+    [V0, api]=max(Vaux,[],2);
+    
+    vt(Restr_Act_a:end,t)=V0; %Registramos Value Function
+    
+    Api(Restr_Act_a:end,t) = api - 1 + Restr_Act; %Posición donde encontramos la policy de activos óptima.
+    Apf(Restr_Act_a:end,t)=A(api - 1 + Restr_Act);%PolicyFunction de activos
+    Cpf(Restr_Act_a:end,t)=y(t)+(1+r)*A(Restr_Act_a:end)'-Apf(Restr_Act_a:end,t);%Policy function de consumo
+    Restr_Act=Restr_Act_a;  
+    
 end
 toc
 
-%----------------------------------------------------------------------
-%% 3. Trayectorias relevantes
-% ------------------------------------------------------------------------
-% Trayectorias relevantes, sabemos que a_1=0.
 
-% Activos - lt_act ------------------------------------------------------
-pos_ini = sum(A<0) + 1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
-lt_activos=NaN(1,T+1); % Vector que es fila de 1 hasta T Poner hasta el ultimo periodo
-lt_activos(1)=A(pos_ini); % Posición en grilla activos donde encontramos el nivel de activos inicial (cero)
+%Trayectorias relevantes, sabemos que a_1=0.
 
-for i = 2:T
-    pos_activos_corr = Ap(pos_ini,i-1);
-    lt_activos(i) = A(pos_activos_corr);
-    pos_ini = pos_activos_corr;
+%Activos
+Pos_Act_Inic=sum(A<0)+1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
+lt_activos=zeros(1,T+1);
+lt_activos(1)=A(Pos_Act_Inic);
+
+for i=2:T
+    Pos_Act_Corr=Api(Pos_Act_Inic,i-1);
+    lt_activos(i)=A(Pos_Act_Corr);
+    Pos_Act_Inic=Pos_Act_Corr;   
 end
 
-% Consumo - lt_consumo ---------------------------------------------------
-% Se despeja la ecuacion que se obtiene para consumo
-% Se hace loop por tema con las dimensiones
-lt_consumo = omega(1:T) + lt_activos(1:T)*(1+r) - lt_activos(2:T+1); %Policy function consumption
+%Consumo
+lt_consumo=lt_activos(1:T)*(1+r)+y-lt_activos(2:T+1);
 
-% Ahorro - lt_ahorro -----------------------------------------------------
-% Lo mismo para ahorro
-lt_ahorro = omega(1:T)  - lt_consumo; %Policy function ahorro
+%Ahorro
+lt_ahorro=y-lt_consumo;
 
 end
+
+

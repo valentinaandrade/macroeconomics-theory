@@ -1,8 +1,8 @@
-function [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_ahorro,gamma, y]=CicloVidaCRestricciones(T,sigma,beta,r,b)
+function [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_ahorro,gamma, y]=fisher(T,sigma,beta,r,b)
 
 
 %Asset grid:
-A=linspace(-15,25,3001);
+A=linspace(-15,25,1001);
 alpha=1/3;
 delta=0.1;
 w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
@@ -10,7 +10,7 @@ w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
 % Income
 y=zeros(1,T);
 for i=1:T
-  gamma(i) = ((40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2)+1);
+  gamma(i) = (1+(40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2));
   y(i) = gamma(i)*w(r);
 end
 
@@ -37,7 +37,7 @@ Restr_Act=max([No_Ponzi, sum(A<-b)+1]);%Posiciones en la grilla de activos desde
 
 vt = NaN(length(A),T); %Aquí va la ValueFunction, cada columna es un periodo y cada fila corresponde a un nivel de activos inicial
 c_Final=y(T)+(1+r).*A(Restr_Act:end);%Consumo admisibles (es solo una opción, por ende también es un óptimo para cada nivel de activo) en el último periodo. (Recordar que a_66=0)
-vt(Restr_Act:end, T)=utility(c_Final, sigma);%Value function en último periodo.
+vt(Restr_Act:end, T)=crra(c_Final, sigma);%Value function en último periodo.
 
 
 Api = NaN(length(A),T); %Posición en la grilla donde encontramos el nivel de capital que maximiza (columna-periodo y fila-nivel de activo inicial).
@@ -48,10 +48,7 @@ Cpf = NaN(length(A),T); %Política de consumo, derivada de la eq. (3) de la tare
 Cpf(Restr_Act:end, T)=y(T)+(1+r)*A(Restr_Act:end)'-Apf(Restr_Act:end,end); %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
 
 %Loop para rellenar columnas T-1 y hacia atrás.
-
-
 tic
-
 for t=T-1:-1:1
     
     No_Ponzi_a=sum(A<a_cota_inf(t))+1;
@@ -62,7 +59,7 @@ for t=T-1:-1:1
     c=c-A(Restr_Act:end);%Consumos posibles (columnas) para cada nivel inicial de capital (filas) permitido
     c(c<=0)=NaN;%Condición de no negatividad sobre el consumo
     
-    Vaux= utility(c,sigma)+beta*vt(Restr_Act:end,t+1)';
+    Vaux= crra(c,sigma)+beta*vt(Restr_Act:end,t+1)';
     
     [V0, api]=max(Vaux,[],2);
     

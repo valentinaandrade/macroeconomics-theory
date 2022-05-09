@@ -1,6 +1,5 @@
 function [V1, Api, Apf, Cpf, Trayectoria_Act, Trayectoria_Cons, Trayectoria_Ahorro,gamma,y]=fisher(T,sigma,beta,r,b)
 
-
 %Asset grid:
 A=linspace(-15,25,3001);
 alpha=1/3;
@@ -24,10 +23,7 @@ for j=T:-1:1
     a_cota_inf(j)=(a_cota_inf(j+1)-y(j))/(1+r);
 end
 
-
-
-%Última columna es caso especial (sabemos que se consume todo), hacemos a mano:
-
+% Ultima columna es caso especial (sabemos que se consume todo), hacemos a mano:
 No_Ponzi=sum(A<a_cota_inf(T))+1; 
 Restr_Act=max([No_Ponzi, sum(A<-b)+1]);%Posiciones en la grilla de activos desde la cual
 %está definida la VFunction_65 (a raíz de restricciones anteriores
@@ -48,10 +44,7 @@ Cpf = NaN(length(A),T); %Política de consumo, derivada de la eq. (3) de la tare
 Cpf(Restr_Act:end, T)=y(T)+(1+r)*A(Restr_Act:end)'-Apf(Restr_Act:end,end); %La policy de consumo en el último periodo queda definida también por el hecho de que a_66=0
 
 %Loop para rellenar columnas T-1 y hacia atrás.
-
-
 tic
-
 for t=T-1:-1:1
     
     No_Ponzi_a=sum(A<a_cota_inf(t))+1;
@@ -61,24 +54,17 @@ for t=T-1:-1:1
     c=y(t)+(1+r)*A(Restr_Act_a:end)';%Consumo antes de policy de activos. 
     c=c-A(Restr_Act:end);%Consumos posibles (columnas) para cada nivel inicial de capital (filas) permitido
     c(c<=0)=NaN;%Condición de no negatividad sobre el consumo
-    
     Vaux= utility(c,sigma)+beta*V1(Restr_Act:end,t+1)';
-    
     [V0, api]=max(Vaux,[],2);
-    
     V1(Restr_Act_a:end,t)=V0; %Registramos Value Function
-    
     Api(Restr_Act_a:end,t) = api - 1 + Restr_Act; %Posición donde encontramos la policy de activos óptima.
     Apf(Restr_Act_a:end,t)=A(api - 1 + Restr_Act);%PolicyFunction de activos
     Cpf(Restr_Act_a:end,t)=y(t)+(1+r)*A(Restr_Act_a:end)'-Apf(Restr_Act_a:end,t);%Policy function de consumo
-    Restr_Act=Restr_Act_a;  
-    
+    Restr_Act=Restr_Act_a;     
 end
 toc
 
-
 %Trayectorias relevantes, sabemos que a_1=0.
-
 %Activos
 Pos_Act_Inic=sum(A<0)+1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
 Trayectoria_Act=zeros(1,T+1);
@@ -92,7 +78,6 @@ end
 
 %Consumo
 Trayectoria_Cons=Trayectoria_Act(1:T)*(1+r)+y-Trayectoria_Act(2:T+1);
-
 %Ahorro
 Trayectoria_Ahorro=y-Trayectoria_Cons;
 

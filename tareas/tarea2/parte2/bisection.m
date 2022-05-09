@@ -42,40 +42,38 @@ tol=10^(-5); % tolerancia
 %% Step 5. Return midpoint value r_n = (a_n + b_n) /2
 % 0. Parametros-----------------------------------------------------------
 beta = 0.96; % Impaciencia
-T = 70; % Horizonte temporal
+T = 65; % Horizonte temporal
 sigma = 2; % Elastic of intertermporal substitution (IES).
-A = linspace(-15,25,1001)'; % Tienen como deuda maxima -15 y ahorro 25
 alpha = 1/3;
 delta = 0.1;
 % Trayectoria por edad como handle function  y luego dentro de fischer se multiplica por salario ---------
-gamma= @(t) ((40/(0.4*t*(2*pi).^(1/2)))*exp((-1/2)*((log(t)-log(32.5))/0.4).^2)+1);
 mt = 1/T;
 
 % a
-[~, gammat_a, lt_activos_a, ~,~,~] = fisher(T, sigma, beta,a,gamma,liq); % Aquí se rellena la trayectoria optima
-oa_a = mt.*sum(lt_activos_a);
-ok_a = mt.*sum(((alpha)./(a+delta)).^(1/(1-alpha)).*gammat_a);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
+[~,~, ~, ~,lt_activos_a, ~,~,gammat_a,~] = fisher(T, sigma, beta,a,liq); % Aquí se rellena la trayectoria optima
+oa_a = sum(mt.*lt_activos_a);
+ok_a = sum(mt.*((alpha)./(a+delta)).^(1/(1-alpha)).*gammat_a);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
 f_a =(oa_a-ok_a)/ok_a;
 
 % b
-[~, gammat_b, lt_activos_b, ~,~,~] = fisher(T, sigma, beta,b,gamma,liq); % Aquí se rellena la trayectoria optima
-oa_b = mt.*sum(lt_activos_b);
-ok_b = mt.*sum(((alpha)./(b+delta)).^(1/(1-alpha)).*gammat_b);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
+[~,~, ~, ~,lt_activos_b, ~,~,gammat_b,~] = fisher(T, sigma, beta,b,liq); % Aquí se rellena la trayectoria optima
+oa_b = sum(mt.*lt_activos_b);
+ok_b = sum(mt.*((alpha)./(b+delta)).^(1/(1-alpha)).*gammat_b);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
 f_b=(oa_b-ok_b)/ok_b;
 
 % Midpoint r0
 r0 = (a + b)/2;
-[~, gammat_r0, lt_activos_r0, ~,~,~] = fisher(T, sigma, beta,r0,gamma,liq); % Aquí se rellena la trayectoria optima
-oa_r0 = mt.*sum(lt_activos_r0);
-ok_r0 = mt.*sum(((alpha)./(r0+delta)).^(1/(1-alpha)).*gammat_r0);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
+[~,~, ~, ~,lt_activos_r0, ~,~,gammat_r0,~] = fisher(T, sigma, beta,r0,liq); % Aquí se rellena la trayectoria optima
+oa_r0 = sum(mt.*lt_activos_r0);
+ok_r0 = sum(mt.*((alpha)./(r0+delta)).^(1/(1-alpha)).*gammat_r0);% sacarle el w de antes y agregrar ((1- alpha)*((alpha)/(r+delta)).^(1/(1-alpha))).*
 f_r0=(oa_r0-ok_r0)/ok_r0;
 
 if f_a*f_b >= 0
     disp('Método de biseccion falla');
 else
  % Preallocate 
-    n= 100000; % semilla iterativa
-    epsilon = 0.0005; % error semilla
+    n= 120; % semilla iterativa
+    epsilon = 1; % error semilla
 % Algoritmo biseccion     
 while epsilon > tol
   for n = 1:n+1
@@ -84,7 +82,7 @@ while epsilon > tol
     elseif f_b*f_r0 < 0
         a = r0;
     elseif f_r0 == 0
-     %disp('Solución exacta encontrada');
+     disp('Solución exacta encontrada');
     else
      disp('Metodo de biseccion falla');
     end

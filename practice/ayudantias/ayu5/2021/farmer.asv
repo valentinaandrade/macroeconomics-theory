@@ -1,13 +1,9 @@
-function [V1, At, Ct, Api, Apt, Cpt]=farmer(T, A, beta, r, w, y, sigma,liq)
+function [V1, At, Ct, Api, Apt, Cpt]=farmer(T, A, beta, r, w, y, sigma)
 %Condición de acceso al crédito
 a_credit = zeros(1,T+1);
 for i = T:-1:1
     a_credit(i) = (a_credit(i+1)-w*y(i)) / (1+r);
-    if a_credit >= -liq
-        a_credit(i) = a_credit(i);
-    else
-        a_credit(i) = -liq;
-    end
+    if a_credit >= -
 end
 a_credit_pos_p = sum(A<a_credit(end)) + 1; %initial lower bound position
 

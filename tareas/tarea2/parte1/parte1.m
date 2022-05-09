@@ -2,10 +2,10 @@
 % Valentina Andrade ------------------------------------------------------
 % 0. Parametros
 beta = 0.96; % Impaciencia
-T = 70; % Horizonte temporal
+T = 65; % Horizonte temporal
 sigma = 2; % Elastic of intertermporal substitution (IES).
 liq = 100;% Si mi restriccion de liquidez es b = 100 no es activo
-A = linspace(-15,25,5001)'; % Tienen como deuda maxima -15 y ahorro 25
+A = linspace(-15,25,1001)'; % Tienen como deuda maxima -15 y ahorro 25
 
 % Salario como handle function  y luego hacer vector para cada T
 w  = @(t) -10^(-3)*t.^2 + 5*10^(-2)*t + 1 ; % se multiplica escalar, entonces voy a ocupar vectores

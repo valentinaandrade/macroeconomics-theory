@@ -1,0 +1,6 @@
+for i = 1:length(g)
+syms t x
+sumpob(x) = symsum((1+x).^(65-t),t,0,65);
+m = @(t,x) ((1+x).^(65-t))./sumpob(x);
+mt = m(1:T, g(i));
+end

@@ -91,10 +91,10 @@ a=-0.1;f=0.1;%Intervalo [a,b]
 
 
 %Grilla para Restricciones de Liquidez
-b=linspace(0,5,15);
-r_eq=zeros(1,15);
+b=linspace(0,7,8);
+r_eq=zeros(1,8);
 
-for i=1:15
+for i=1:8
 
 error=1;
     

@@ -5,7 +5,7 @@ set(groot,'DefaultTextInterpreter','Latex');
 set(groot, 'DefaultLegendInterpreter', 'Latex');
 set(groot, 'DefaultAxesFontSize',12);
 % Line width
-set(groot, 'DefaultLineLineWidth', 2.5);
+set(groot, 'DefaultLineLineWidth', 2);
 
 % Color grid
 color= [linspace(0.0000, 0.4940, T)',...
