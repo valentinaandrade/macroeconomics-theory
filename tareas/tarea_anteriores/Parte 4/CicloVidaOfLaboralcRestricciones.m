@@ -1,18 +1,21 @@
 function [V1, Api, Apf, Cpf, Trayectoria_Act, Trayectoria_Cons, Trayectoria_Laboral ,Trayectoria_Ahorro]=CicloVidaOfLaboralcRestricciones(T,psi,beta,r,b)
 
 %Asset grid:
-A=linspace(-15,25,3001);
+A=linspace(-15,25,1001);
 
 
 %Salario exógeno
+alpha = 1/3;
+delta = 0.1;
+%Salario exógeno
+w= @(r,alpha,delta) (1-alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
+z =@ (t,mu,sig) 0.4 +40*exp(-((log(t)-mu)/sig).^2 /2)./ (t* sig*sqrt(2*pi));
+y = z(1:T, log(32.5), 0.4)*w(r,alpha,delta);
 
-y=zeros(1,T);
-
-for i=1:T
-    
-    y(i)=(1+0.07*i-0.001*i^2);
-    
-end
+%y=zeros(1,T);
+%for i=1:T
+%    y(i)=(1+0.07*i-0.001*i^2);
+%end
 
 
 V1 = NaN(length(A),T); %Aquí va la ValueFunction, cada columna es un periodo y cada fila corresponde a un nivel de activos inicial

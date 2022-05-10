@@ -230,7 +230,7 @@ close all;clc;clear;
 
 T=65; 
 beta = 0.96;
-psi = 1.25;
+psi = 1.2;
 
 tol=10^(-1);
 error=1;
@@ -239,7 +239,7 @@ a=0.035;f=0.05;%Intervalo [a,b]
 
 
 
-b=linspace(1,4,10);%Grilla de restricciones de liquidez
+b=linspace(0,9,10);%Grilla de restricciones de liquidez
 r_eq=zeros(1,10);%Grila de tasas de equilibrio.
 Trayectoria_Laboral=zeros(10,66);
 Trayectoria_Cons=zeros(10,65);

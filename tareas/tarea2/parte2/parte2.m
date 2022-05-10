@@ -73,8 +73,8 @@ legend('Trayectoria consumo $c_t$', 'Evolucion salarial $\omega\cdot \gamma_t$')
 % la trayectoria de consumo óptima (junto al ingreso) y (4) la correlación consumo - ingreso en función de la
 % restricción8 de liquidez. Explique la intuición económica.
 a = -0.06; %r(1)
-b = 0.09;%r(10)
-liq = linspace(0,7,8);
+b = 0.1;%r(10)
+liq = linspace(0,7,8); % Cuando restriccion no esta activa, voy a hacerla hasta 10
 
 for i = 1:length(liq)
 [r_eq, ~]=bisection_bueno(a,b,liq); % r endogena
@@ -94,12 +94,14 @@ subplot(2,2,1)
 p = plot(1:T+1,lt_activos(:,1:end));
 xlabel('T')
 title('Trayectoria optima de activos')
+% Graficar distintas tasas para r_eq(i), y ver como afecta al ahorro 
  
 subplot(2,2,2)
 plot(1:T,lt_consumo, 1:T, omega(end,:), ':') % saque ingresos pues como es endogena ni se nota
 xlabel('$T$')
 ylabel('Trayectoria de consumo')
 legend('Trayectoria consumo $c_t$', 'Evolucion salarial $\omega\cdot \gamma_t$')
+% Leyenda tasa interes mas baja y mas alta
 
 subplot(2,2,3)
 plot(liq,r_eq)

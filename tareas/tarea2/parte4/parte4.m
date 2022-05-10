@@ -8,14 +8,30 @@ sigma = 2; % Elastic of intertermporal substitution (IES).
 liq = 100;% Si mi restriccion de liquidez es b = 100 no es activo
 alpha = 1/3;
 delta = 0.1;
-r = (1-beta)/beta;
-varphi=1.2;
-% No es necesario que  w sea un parametro de fisher pues es fijo
+varphi= 1.2;
+r = 0.05;
+% No es necesario que  w sea un parametro de labor pues es la misma funcion
 [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_labor, lt_ahorro,y] = labor(T,varphi,beta,r,liq);
-figurepolicy(T, vt, Api,Cpf)
-%agregar figure de lo que mostraremos ahora
 
-%% j. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
+
+figure;
+subplot(2,2,1)
+plot(lt_activos)
+title('Trayectoria de activos')
+subplot(2,2,2)
+plot(lt_consumo)
+title('Trayectoria de consumo')
+subplot(2,2,3)
+plot(lt_labor)
+title('Trayectoria de trabajo')
+subplot(2,2,4)
+plot(lt_ahorro)
+title('Trayectoria de ahorro')
+
+
+
+
+%% k. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
 % Grafique un subplot que muestre (1) consumo, (2) activos, (3) tasa
 % equilibrio (4) oferta laboral,  (5) la correlación consumo - ingreso en función de la
 % restricción8 de liquidez (5) oferta laboral agregada. Explique la intuición económica.
