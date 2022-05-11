@@ -25,8 +25,7 @@ vt = NaN(length(A),T); %Aquí va la ValueFunction, cada columna es un periodo y 
 % consumo (el consumo optimo es comerlo todo)
 % 2. Suficiencia: Esto se da si y solo si se da solucion interna dada la
 % restriccion de consumo y trabajo-ocio (l+n =1)
-c_final=(((1+r).*A+y(T))/(1+varphi))'; % Restriccion consumo. Los activos a_66=0, ct= at*(1+r) +n*wt --- n = 1+l y en el optimo l = varphi*ct/wt
-% (varphi*ct/wt)*wt
+c_final=(((1+r).*A+y(T))/(1+varphi))'; % Restriccion consumo. Los activos a_66=0, y n= 1+l -- w(1+l)
 c_final(c_final<0)=NaN; % No negatividad
 l_final=(varphi/y(T))*c_final; %Ocio cuando se está en solución interior.
 c_final=(1+r)*A'+(y(T)*(1-l_final));
@@ -67,6 +66,7 @@ for t=T-1:-1:1
 end
 toc
 
+% Trayectorias -----------------------------------------------------------
 Pos_Act_Inic=sum(A<0)+1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
 lt_activos=zeros(1,T+1);%Prealocamos la trayectoria
 lt_activos(1)=A(Pos_Act_Inic);
@@ -76,7 +76,7 @@ for i=2:T
     Pos_Act_Inic=Pos_Act_Corr;   
 end
 
-% Preallocate
+% Preallocate -------------------------------------------------------------
 Pos_Act_Inic=sum(A<0)+1;%Posición en grilla activos donde encontramos el nivel de activos inicial.
 lt_labor=zeros(1,T+1);
 lt_labor(1)=1-Lpf(Pos_Act_Inic,1);
@@ -88,11 +88,9 @@ for i=2:T
 end
 
 
-% Consumo
+% Consumo ---------------------------------------------------------------
 lt_consumo=lt_activos(1:T)*(1+r)+y.*lt_labor(1:T)-lt_activos(2:T+1);
 
-%Ahorro
+%Ahorro ------------------------------------------------------------------
 lt_ahorro=y.*lt_labor(1:T)-lt_consumo;
-
-
 end

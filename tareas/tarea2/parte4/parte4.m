@@ -9,10 +9,10 @@ liq = 100;% Si mi restriccion de liquidez es b = 100 no es activo
 alpha = 1/3;
 delta = 0.1;
 varphi= 1.2;
-r = 0.05;
 % No es necesario que  w sea un parametro de labor pues es la misma funcion
-[vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_labor, lt_ahorro,y] = labor(T,varphi,beta,r,liq);
-
+a=0;b=0.1;liq=8;
+[r_eq, ~,~, ~, ~, ~]=equilibrio(a,b,liq);
+[vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_labor, lt_ahorro,y] = labor(T,varphi,beta,r_eq,liq);
 
 figure;
 subplot(2,2,1)
@@ -29,47 +29,49 @@ plot(lt_ahorro)
 title('Trayectoria de ahorro')
 
 
-
-
 %% k. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
 % Grafique un subplot que muestre (1) consumo, (2) activos, (3) tasa
 % equilibrio (4) oferta laboral,  (5) la correlación consumo - ingreso en función de la
 % restricción8 de liquidez (5) oferta laboral agregada. Explique la intuición económica.
-a = -0.06; %r(1)
-b = 0.09;%r(10)
-liq = linspace(0,9,10);
+a=0;
+b=0.1;%Intervalo [a,b]
+liq=linspace(0,9,10);%Grilla de restricciones de liquidez
+[r_eq, lt_consumo, lt_laboral, lt_activos, ol, correlacion]=equilibrio(a,b,liq);
 
-for i = 1:length(liq)
-[r_eq, ~]=bisection_bueno(a,b,liq); % r endogena
-[~, ~, ~, ~, lt_activos, lt_consumo, lt_labor, lt_ahorro,y] = labor(T,varphi,beta,r,liq);
-end
-
-correlation = zeros(length(liq),1);
-for i =1:length(liq)
-aux= corrcoef(omega(i,1:end), lt_consumo(i,:));
-correlation(i) =aux(2,1);
-end
-
-%% Figuras 
+% Figuras 
 figure;
-sgtitle('Equilibrio general','FontSize', 20)
-subplot(2,2,1)
-p = plot(1:T+1,lt_activos(:,1:end));
+sgtitle('Equilibrio general con restriccion de liquidez','FontSize', 20)
+subplot(3,2,1)
+p = plot(1:T+1,lt_activos);
 xlabel('T')
 title('Trayectoria optima de activos')
- 
-subplot(2,2,2)
-plot(1:T,lt_consumo, 1:T, omega(end,:), ':') % saque ingresos pues como es endogena ni se nota
-xlabel('$T$')
-ylabel('Trayectoria de consumo')
-legend('Trayectoria consumo $c_t$', 'Evolucion salarial $\omega\cdot \gamma_t$')
+legend([p(1) p(10)],'Restriccion activa','Restriccion no activa', 'Location','best');
 
-subplot(2,2,3)
+ 
+subplot(3,2,2)
+p=plot(1:T,lt_consumo); % saque ingresos pues como es endogena ni se nota
+xlabel('T')
+title('Trayectoria de consumo')
+legend([p(1) p(10)],'Restriccion activa','Restriccion no activa', 'Location','best');
+
+
+subplot(3,2,3)
+p = plot(1:T+1,lt_laboral); % saque ingresos pues como es endogena ni se nota
+xlabel('T')
+title('Trayectoria laboral')
+legend([p(1) p(10)],'Restriccion activa','Restriccion no activa','Location','best');
+
+subplot(3,2,4)
 plot(liq,r_eq)
 xlabel('Restriccion endeudamiento')
-ylabel('Tasa interes de equilibrio')
+title('Tasa interes de equilibrio')
 
-subplot(2,2,4)
-plot(liq, correlation)
+subplot(3,2,5)
+plot(liq, correlacion)
 xlabel('Restriccion endeudamiento')
-ylabel('Correlacion entre consumo e ingreso')
+title('Correlacion entre consumo e ingreso')
+
+subplot(3,2,6)
+plot(ol)
+xlabel('T')
+title('Oferta laboral agregada')
