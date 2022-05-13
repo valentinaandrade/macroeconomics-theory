@@ -1,6 +1,5 @@
 function [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_ahorro,gamma, y]=fisher(T,sigma,beta,r,b)
 
-
 %Asset grid:
 A=linspace(-15,25,1001);
 alpha=1/3;
