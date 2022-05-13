@@ -1,13 +1,6 @@
 function figurepolicy(T, vt, Ap,Cp)
 % Funcion que contiene opciones para hacer figuras
-A = linspace(-15,25,5001)'; % Tienen como deuda maxima -15 y ahorro 25
-
-% Graph font
-set(groot,'DefaultTextInterpreter','Latex');
-% Legend font
-set(groot, 'DefaultLegendInterpreter', 'Latex');
-% Line width
-set(groot, 'DefaultAxesFontSize',12);
+A = linspace(-15,25,1001)'; % Tienen como deuda maxima -15 y ahorro 25
 
 % Color grid
 color= [linspace(0.0000, 0.4940, T)',...

@@ -34,7 +34,6 @@ gamma = z(2:T+1, log(32.5), 0.4);
 mt= 1/T;
 Lbar = sum(mt*gamma);
 
-
 tic
 for i = 1: rdim
 [~,~, ~, ~,lt_activos(i,:), ~,~,gammat(i,:),~] = fisher(T, sigma, beta,r(i),liq); % Aquí se rellena la trayectoria optima

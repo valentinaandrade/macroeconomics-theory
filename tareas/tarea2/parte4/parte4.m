@@ -31,7 +31,7 @@ plot(lt_ahorro)
 title('Trayectoria de ahorro')
 
 
-%% k. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
+%% l. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
 % Grafique un subplot que muestre (1) consumo, (2) activos, (3) tasa
 % equilibrio (4) oferta laboral,  (5) la correlación consumo - ingreso en función de la
 % restricción8 de liquidez (5) oferta laboral agregada. Explique la intuición económica.

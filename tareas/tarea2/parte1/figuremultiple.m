@@ -1,12 +1,5 @@
 function figuremultiple(A,T, sigma, beta,r,w,liq)
 %Function para graficar multiples trayectorias
-% Graph font
-set(groot,'DefaultTextInterpreter','Latex');
-% Legend font
-set(groot, 'DefaultLegendInterpreter', 'Latex');
-% Line width
-set(groot, 'DefaultAxesFontSize',12);
-
 % Color grid
 color= [linspace(0.0000, 0.4940, T)',...
         linspace(0.4470, 0.1840, T)',...

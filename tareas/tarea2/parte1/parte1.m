@@ -1,5 +1,6 @@
 %% Tarea 2 ---------------------------------------------------------------
 % Valentina Andrade ------------------------------------------------------
+clear; clc; close all
 % 0. Parametros
 beta = 0.96; % Impaciencia
 T = 65; % Horizonte temporal
