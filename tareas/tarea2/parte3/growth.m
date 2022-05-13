@@ -1,8 +1,6 @@
 function mt = growth(T,g)
 %Pob evolution indicates the growth population 
-g =  linspace(0,0.01,11);
 
-sumpob = 0;
 for j = 1:length(g)
     sumpob = 0;
 for t = 1:T

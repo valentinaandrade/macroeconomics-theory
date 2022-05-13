@@ -9,6 +9,8 @@ liq = 100;% Si mi restriccion de liquidez es b = 100 no es activo
 alpha = 1/3;
 delta = 0.1;
 varphi= 1.2;
+% Es como si quisiera negativo pirque quiero mas ocio, pero tengo la
+% restriccion entonces se pone cero
 % No es necesario que  w sea un parametro de labor pues es la misma funcion
 a=0;b=0.1;liq=8;
 [r_eq, ~,~, ~, ~, ~]=equilibrio(a,b,liq);

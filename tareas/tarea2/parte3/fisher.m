@@ -10,7 +10,7 @@ w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
 % Income
 y=zeros(1,T);
 for i=1:T
-  gamma(i) = (1+(40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2));
+  gamma(i) = (0.4+(40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2));
   y(i) = gamma(i)*w(r);
 end
 

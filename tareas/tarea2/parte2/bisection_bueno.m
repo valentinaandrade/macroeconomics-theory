@@ -31,14 +31,13 @@ tol=10^(-2);
 error=1;
 
 %Grilla para Restricciones de Liquidez
-liq=linspace(0,7,8);
 r_eq=zeros(1,length(liq));
 
 for i=1:length(liq)
 
 error=1;
 r_0=a;r_1=b;
-[~,~,~,~,lt_activos_0,~,gamma,~]=fisher(T, sigma, beta,r_0,liq(i));
+[~,~,~,~,lt_activos_0,~,~,~]=fisher(T, sigma, beta,r_0,liq(i));
 oa_0=sum(mt.*lt_activos_0);
 %kk_0=(alpha/(r_0+delta))^(1/(1-alpha))*sum(mt.*gamma);
 %Of_Activos_0 = (oa_0-kk_0)/kk_0;
@@ -47,7 +46,7 @@ oa_0=sum(mt.*lt_activos_0);
 
     r_bar=(r_1+r_0)/2;
 
-    [~,~,~,~,lt_activos_bar,~,gamma,~]=fisher(T, sigma, beta, r_bar, liq(i));
+    [~,~,~,~,lt_activos_bar,~,~,~]=fisher(T, sigma, beta, r_bar, liq(i));
     oa_bar=sum(mt.*lt_activos_bar);
     %kk_bar=(alpha/(r_bar+delta))^(1/(1-alpha))*sum(mt.*gamma);
     %Of_Activos_bar = (Of_Activos_bar-kk_bar)/kk_bar;

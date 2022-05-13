@@ -22,10 +22,7 @@ function [r_eq, error] = bisection_pob(a,b, liq,g)
 T=65; 
 beta = 0.96;
 sigma = 2;
-alpha = 1/3;
-delta = 0.1;
 tol=10^(-2);
-g =  linspace(0,0.01,11);
 mt = growth(T,g);
 
 %Grilla para Restricciones de Liquidez
@@ -34,17 +31,13 @@ r_eq=zeros(1,length(g));
 for i=1:length(mt)
 error=1;
 r_0=a;r_1=b;
-[~,~,~,~,lt_activos_0,~,gamma,~]=fisher(T, sigma, beta,r_0,liq);
-oa_0=sum(mt(i).*lt_activos_0);
-kk_0=(alpha/(r_0+delta))^(1/(1-alpha))*sum(mt(i).*gamma);
-f_0 = (oa_0-kk_0)/kk_0;
+[~,~,~,~,lt_activos_0,~,~,~]=fisher(T, sigma, beta,r_0,liq);
+oa_0=sum(lt_activos_0)*mt(i);
     while  tol<error
     r_bar=(r_1+r_0)/2;
 
-    [~,~,~,~,lt_activos_bar,~,gamma,~]=fisher(T, sigma, beta, r_bar, liq);
-    oa_bar=sum(mt(i).*lt_activos_bar);
-    kk_bar=(alpha/(r_bar+delta))^(1/(1-alpha))*sum(mt(i).*gamma);
-    f_bar = (oa_bar-kk_bar)/kk_bar;
+    [~,~,~,~,lt_activos_bar,~,~,~]=fisher(T, sigma, beta, r_bar, liq);
+    oa_bar=sum(lt_activos_bar)*mt(i);
     error=abs(oa_bar);
 
         if sign(oa_bar)~=sign(oa_0)

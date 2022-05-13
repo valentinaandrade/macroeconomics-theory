@@ -4,15 +4,14 @@ clear all ; close all ; clc
 T=65;
 beta = 0.96;
 sigma = 2;
-a_1 = 0;
 alpha = 0.33;
 delta = 0.1;
 
 %Asset grid
-A = linspace(-10,15,2001);
+A = linspace(-10,15,1001);
 
 % Labor Income
-z= @(x,mu,sig) 1 + 6 *exp(-( (log(x)-mu)/sig ).^2 /2 ) ./(x* sig*sqrt(2*pi));
+z= @(x,mu,sig) 0.4 + 6 *exp(-( (log(x)-mu)/sig ).^2 /2 ) ./(x* sig*sqrt(2*pi));
 y = z(1:T, log(20), 0.4);
 %a
 r = (1 - beta) / beta;
@@ -77,6 +76,7 @@ subplot(2,2,3)
 plot(1:T,Ct)
 xlabel('T')
 ylabel('Consumption')
+
 %%
 %b
 clear; close all ; clc
@@ -84,9 +84,9 @@ clear; close all ; clc
 T=65;
 beta = 0.96;
 sigma = 2;
-a_1 = 0;
 alpha = 0.33;
 delta = 0.1;
+liq=100;
 
 %Asset grid
 A = linspace(-15,25,1001);
@@ -97,7 +97,6 @@ y = z(1:T, log(32.5), 0.4);
 
 r = (1 - beta) / beta;
 r = 1.3*r; %Inciso b
-%w = 1.02;
 w= (1-alpha)*( alpha/(r+delta) )^(alpha/(1-alpha)); %equi. general: c) y d)
 %VFI function: Farmer
 [~, At, Ct, ~, ~, ~]=farmer(T, A, beta, r, w, y, sigma,liq);
