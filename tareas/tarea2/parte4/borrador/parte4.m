@@ -5,15 +5,14 @@ clear; close all; clc
 beta = 0.96; % Impaciencia
 T = 65; % Horizonte temporal
 sigma = 2; % Elastic of intertermporal substitution (IES).
-liq = 8;% Si mi restriccion de liquidez es b = 100 no es activo
+liq = 100;% Si mi restriccion de liquidez es b = 100 no es activo
 alpha = 1/3;
 delta = 0.1;
 varphi= 1.2;
 % Es como si quisiera negativo pirque quiero mas ocio, pero tengo la
 % restriccion entonces se pone cero
 % No es necesario que  w sea un parametro de labor pues es la misma funcion
-%% o.1 Adicional para ver sin restricciones 
-a=0;b=0.1;
+a=0;b=0.1;liq=8;
 [r_eq, ~,~, ~, ~, ~]=equilibrio(a,b,liq);
 [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_labor, lt_ahorro,y] = labor(T,varphi,beta,r_eq,liq);
 
@@ -32,7 +31,7 @@ plot(lt_ahorro)
 title('Trayectoria de ahorro')
 
 
-%% o2. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
+%% l. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
 % Grafique un subplot que muestre (1) consumo, (2) activos, (3) tasa
 % equilibrio (4) oferta laboral,  (5) la correlación consumo - ingreso en función de la
 % restricción8 de liquidez (5) oferta laboral agregada. Explique la intuición económica.
@@ -59,7 +58,7 @@ legend([p(1) p(10)],'Restriccion activa','Restriccion no activa', 'Location','be
 
 
 subplot(3,2,3)
-p = plot(1:T,lt_laboral(:,1:end-1)); % saque ingresos pues como es endogena ni se nota
+p = plot(1:T+1,lt_laboral); % saque ingresos pues como es endogena ni se nota
 xlabel('T')
 title('Trayectoria laboral')
 legend([p(1) p(10)],'Restriccion activa','Restriccion no activa','Location','best');
