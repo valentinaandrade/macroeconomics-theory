@@ -28,8 +28,8 @@ subplot(2,2,3)
 plot(lt_labor)
 title('Trayectoria de trabajo')
 subplot(2,2,4)
-plot(lt_ahorro)
-title('Trayectoria de ahorro')
+plot(y)
+title('Trayectoria salarial')
 
 
 %% o2. Tasa de equilibrio, usando el algoritmo de biseccion para diferentes restricciones de liquidez
