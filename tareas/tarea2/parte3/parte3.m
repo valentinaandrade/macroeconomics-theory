@@ -1,12 +1,12 @@
 % Tarea 2 - Parte 3 ------------------------------------------------------
 clear; clc, close all;
-% k. Crecimiento poblacional
-T = 65;
-sigma = 2; beta= 0.96; alpha =1/3; delta = 0.1;
+% l1. Crecimiento poblacional -------------------------------------------
+T = 65; % Horizonte
+sigma = 2; beta= 0.96; alpha =1/3; delta = 0.1; % Parametros
 liq = 100; % Si mi restriccion de liquidez es h = 100 no es activo
 g =  linspace(0,0.01,11); % grilla de crecimiento poblacional
 
-% Estimación wt es una matriz de 11 x 65, la dejo comentada porque se
+% Estimación mt es una matriz de 11 x 65, la dejo comentada porque se
 % estimara al interior de la función de bisección modificada:
 
 vg = NaN(length(g),T);
@@ -25,14 +25,12 @@ title('Masa de Agentes segun Crec. Pobl.','FontSize', 13);
 xlabel('T')
 ylabel('Trayectoria Masa de Agentes')
 lgd = legend([p(1), p(length(g))], '$g = 0\%$', '$g = 1\%$')
-saveas(gcf,'part3.png')
 
-% Calculando tasa de interes de equilibrio usando algortimo de bisección
-% modificado
+%%l.2  Calculando tasa de interes de equilibrio usando algortimo de bisección 
 
 % insumos algoritmo de bisección
-a = 0.04; % r(4)
-b = 0.13; % r(13) % Amplio el rango
+a = 0.04; % r(1)
+b = 0.13; % r(10) % Amplio el rango
 
 r_eq=zeros(1,length(g));%Prealocacion
 lt_activos_bar=zeros(length(g),T+1);
@@ -42,6 +40,7 @@ for i = 1:length(g)
 end
 plot(g,r_eq)
 
+% Figura ----------------------------------------------------------------
 figure;
 sgtitle('Crec. Poblacional, Tasa de Interes y Activos','FontSize', 13)
 subplot(1,2,1)
@@ -56,4 +55,3 @@ subtitle('Tray. Optima de Activos','FontSize', 11)
 xlabel('T')
 ylabel('Trayec. de activos')
 lgd = legend([p(1), p(length(g))], '$g = 0\%$', '$g = 1\%$',"Location","southeast")
-saveas(gcf,'part3k.png')

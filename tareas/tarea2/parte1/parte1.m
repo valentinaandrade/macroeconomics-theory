@@ -2,6 +2,7 @@
 % Valentina Andrade ------------------------------------------------------
 clear; clc; close all
 % 0. Parametros
+'./global_opt'; % codigo que contiene los formatos de los graficos
 beta = 0.96; % Impaciencia
 T = 65; % Horizonte temporal
 sigma = 2; % Elastic of intertermporal substitution (IES).
