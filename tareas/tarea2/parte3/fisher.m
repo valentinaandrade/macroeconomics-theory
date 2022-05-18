@@ -1,6 +1,5 @@
 function [vt, Api, Apf, Cpf, lt_activos, lt_consumo, lt_ahorro,gamma, y]=fisher(T,sigma,beta,r,b)
 
-
 %Asset grid:
 A=linspace(-15,25,1001);
 alpha=1/3;
@@ -11,7 +10,7 @@ w=@(r) (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
 y=zeros(1,T);
 for i=1:T
   gamma(i) = (0.4+(40/(0.4*i*(2*pi).^(1/2)))*exp((-1/2)*((log(i)-log(32.5))/0.4).^2));
-  y(i) = gamma(i)*w(r);
+  y(i) = gamma(i).*w(r);
 end
 
 %%Resolución numérica del problema del agente
@@ -23,8 +22,6 @@ a_cota_inf=zeros(1,T+1);
 for j=T:-1:1
     a_cota_inf(j)=(a_cota_inf(j+1)-y(j))/(1+r);
 end
-
-
 
 %Última columna es caso especial (sabemos que se consume todo), hacemos a mano:
 
@@ -72,7 +69,6 @@ for t=T-1:-1:1
     
 end
 toc
-
 
 %Trayectorias relevantes, sabemos que a_1=0.
 

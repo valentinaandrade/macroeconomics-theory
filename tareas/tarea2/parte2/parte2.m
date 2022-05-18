@@ -1,9 +1,9 @@
 %% Tarea 2 - Parte 2 ------------------------------------------------------
-% Valentina Andrade ------------------------------------------------------
 clear; close all; clc
 % Funciones que se ocupan en este codigo
 % - [crra]: funcion CRRA para utilidad de consumo
-% - [fisher]: funcion que calcula el ciclo de vida economico de agente 
+% - [fisher]: funcion que calcula el ciclo de vida economico de agente
+% - [bisection]: funcion para calcular equilibrio
 % 0. Parametros-----------------------------------------------------------
 beta = 0.96; % Impaciencia
 T = 65; % Horizonte temporal
@@ -26,10 +26,7 @@ kk = NaN(1,rdim);     % Oferta agregada de capital
 
 alpha=1/3;
 delta=0.1;
-%for x = 2:T+1
-%gamma(x) = 0.4 + 40 *exp(-( (log(x)-log(32.5))/0.4 )^2 /2 ) /(x*0.4*sqrt(2*pi));
-%end
-z= @(x,mu,sig) 0.4 + 40 *exp(-( (log(x)-mu)/sig )^2 /2 ) /(x* sig*sqrt(2*pi));
+z= @(x,mu,sig) 0.4 + 40 *exp(-( (log(x)-mu)/sig ).^2 /2 ) ./(x* sig*sqrt(2*pi));
 gamma = z(2:T+1, log(32.5), 0.4);
 mt= 1/T;
 Lbar = sum(mt*gamma);
@@ -60,13 +57,12 @@ title('Equilibrio mercado de capitales')
 legend('Oferta activos $a_{t+1}$', 'Demanda capital $K$')
 
 %% i. Tasa equilibrio -------------------------------------------------
-a = -0.03; %Ampliar el intervalo
-b = 0.1;%r(10)
+a = 0.01; %Ampliar el intervalo
+b = 0.1;  %r(10)
 liq = 100;% Si mi restriccion de liquidez es h = 100 no es activo
 %rho = @(x) (oa(x)-ok(x))/ok(x); %Sin valor absoluto
-[r_eq, error]=bisection(a,b,liq); % r endogena
+[r_eq, error]=bisection_simple(a,b,liq); % r endogena
 
-% 0.0775
 % i.2  Figuras ---------------------------------------------------------------
 %Además, grafique la trayectoria de consumo definida por la tasa de equilibrio junto al ingreso de los agentes
 [~,~, ~, ~,~, lt_consumo,~,~,omega] = fisher(T, sigma, beta,r_eq,liq);
@@ -85,7 +81,7 @@ b = 0.1;%r(10)
 liq = linspace(0,9,10); % Se hace grilla mas grande para que se note mas (recomendacion Pablo)
 
 for i = 1:length(liq)
-[r_eq, ~]=bisection_bueno(a,b,liq); % r endogena
+[r_eq, ~]=bisection(a,b,liq); % r endogena
 [~, ~, ~, ~, lt_activos(i,:), lt_consumo(i,:), ~,~, omega(i,:)] = fisher(T, sigma, beta,r_eq(i),liq(i));
 end
 
