@@ -124,8 +124,8 @@ title('\textbf{Consumption}',tx{:})
 
 %% Ausencia de Gobierno - ítem (d) - Simulaciones de Schocks
 clc;
-N = 800;
-T = 300;
+N = 10000;
+T = 2000;
 
 tic
 [panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
