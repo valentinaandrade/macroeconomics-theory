@@ -4,7 +4,7 @@ function u= crra(c,sigma)
         if (sigma==1)
             u= log(c);
         else
-            u= (c.^(1-sigma) -1)/(1-sigma);
+            u= (c.^(1-sigma))/(1-sigma); % Le saque el 1
         end
     else
         % Warning

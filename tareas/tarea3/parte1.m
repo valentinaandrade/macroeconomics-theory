@@ -9,7 +9,7 @@ delta = 0.05; % Depreciacion
 alpha = 0.33; % Complementariedad K y L
 n_e = 5; % Numero de estados posibles de productividad
 A = linspace(0,30,1001); % Grilla de activos, parte de cero, sin endeudamiento
-
+sigma = 2; %IES
 % Especificos del problema
 r = 0.03;
 w = 1;
@@ -104,59 +104,59 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on');
 % Utilice el vector de volatilidad  y compute nuevamente la estadísica descriptiva solicitidada en el ítem anterior. 
 % Explique cómo y por qué cambian sus resultados e interprete económicamente.
 sigma_mu = linspace(0.10, 0.19,10);
+rho = 0.96; % Persistencia
 for i = 1:length(sigma_mu)
-[ct, at, s, v1,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu(i),rho);
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu(i),rho);
 end
 
-figure;
-for j= 1:length(sigma_mu)
-subplot(2,5,j)
-histogram(lt_activos(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
-sgtitle('Trayectoria activos');
-title(['$\sigma_\mu$: ', num2str(sigma_mu(j))]);
-hold on
+[tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
+tab_consumo;
+tab_act; % Nos dan estadisticos descriptivos solicitados (en terminos numericos)
+
+%% (f) Efecto de la persistencia
+% Utilice el vector de persistencia  y compute nuevamente la estadísica descriptiva solicitidada en el ítem anterior. 
+% Explique cómo y por qué cambian sus resultados e interprete económicamente.
+sigma_mu = 0.12; % Volatilidad
+rho = linspace(0.9, 0.98,9);
+for i = 1:length(sigma_mu)
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu,rho(i));
 end
 
-figure;
-for j= 1:length(sigma_mu)
-subplot(2,5,j)
-histogram(lt_consumo(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
-sgtitle('Trayectoria consumo');
-title(['$\sigma_\mu$: ', num2str(sigma_mu(j))]);
-hold on
+[tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
+
+%% (g) Compute efecto en el bienestar de un aumento en la volatilidad del ingreso desde 0.10 hasta 0.15 usando la siguiente medida
+% Reforzaremos el punto (e) mostrando que un aumento en la volatilidad, mas
+% amplitud de estados de productividad puede tomar un shock de
+% productividad. 
+
+% Para hacer esto ocuparemos interpolacion. Esto consiste en usar la
+% funcion de valor del rango más grande de estados de productividad para
+% interpolar aquella con el rango mas pequeño. Entonces tomare como v0 al
+% sigma con 0.1 y como v1 al sigma con 0.15
+sigma_mu = [0.1 0.15];
+rho = 0.96;
+[~,~, ~, v0,~, ~, ~,~] = bellman2(r,w, sigma_mu(1),rho); % limite inferior
+[~,~, ~, v1,~, ~, ~,~] = bellman2(r,w, sigma_mu(2),rho); % limite superior
+
+% Necesito saber el area que esta entremedio. La forma funcional me la da
+% log(et) = alpha + rho*log(et-1) + mu
+plot(v0'); hold on; plot(v1');legend('$V_0$', '$V_1$'); % Me sirve para explorar
+% Voy a interpolar como referencia a v0
+[ee0, ~] = discAR(n_e,rho,sigma_mu(1));
+[ee1, ~] = discAR(n_e,rho,sigma_mu(2));
+
+v1_interp = zeros(length(A), length(ee));
+v0 = v0'; v1 = v1';
+%interp1(grilla epsilon para v1, v1, grilla epsilon para v0)
+for i = 1:length(A)
+ v1_interp(i,:) = interp1(ee1,v1(i,:),ee0);
 end
 
-% Para ver mejor la compracion
-figure;
-histogram(lt_activos(:,end,1), 'Normalization','pdf');
-hold on
-histogram(lt_activos(:,end,10), 'Normalization','pdf');
-histogram(lt_activos(:,end,5), 'Normalization','pdf');
-legend('$\sigma_\mu$: 0.1','$\sigma_\mu$: 0.14', '$\sigma_\mu$: 0.19');
-title('Trayectoria de activos segun volatilidad')
+plot(v0); hold on; plot(v1);plot(v1_interp);legend('$V_0$', '$V_1$', '$V_1 interpolada$'); % Me sirve para explorar
+% ¡Me dio!
 
-figure;
-histogram(lt_consumo(:,end,1), 'Normalization','pdf');
-hold on
-histogram(lt_consumo(:,end,10), 'Normalization','pdf');
-histogram(lt_consumo(:,end,5), 'Normalization','pdf');
-legend('$\sigma_\mu$: 0.1','$\sigma_\mu$: 0.14', '$\sigma_\mu$: 0.19');
-title('Trayectoria de consumo segun volatilidad')
+g = (v1_interp./v0).^(1/(1-sigma)) - 1; % funcion
 
-% Tabla estadisticos descriptivos
-for j= 1:length(sigma_mu)
-    medias(:,j) = mean(lt_activos(:,end,j),'all');
-    mediana(:,j) = median(lt_activos(:,end,j),'all');
-    vari(:,j) = var(lt_activos(:,end,j));
-    percentil(:,j) = prctile(lt_activos(:,end),10);
-    tab_act = [medias' mediana' vari' percentil'];
-end
-
-for j= 1:length(sigma_mu)
-    medias(:,j) = mean(lt_consumo(:,end,j),'all');
-    mediana(:,j) = median(lt_consumo(:,end,j),'all');
-    vari(:,j) = var(lt_consumo(:,end,j));
-    percentil(:,j) = prctile(lt_consumo(:,end),10);
-    tab_consumo = [medias' mediana' vari' percentil'];
-end
+plot(A,g','LineWidth',1.5),legend('$\varepsilon=0.54$','$\varepsilon=0.71$','$\varepsilon=0.93$','$\varepsilon=1.22$','$\varepsilon=1.6$','Interpreter','Latex','FontSize',15,'Location','northeast');
+title('Efecto en bienestar de una reduccion de la volatilidad','FontSize', 20);
 

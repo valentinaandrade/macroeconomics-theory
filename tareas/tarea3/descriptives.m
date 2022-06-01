@@ -1,8 +1,8 @@
-function descriptives(sigma_mu,rho,lt_activos,lt_consumo)
+function [tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
-if isvector(sigma_mu) == 1
+if size(sigma_mu,2) > 1 % si es un vector basicamente o escalar
 
     figure;
     for j= 1:length(sigma_mu)
@@ -80,17 +80,17 @@ else
     figure;
     histogram(lt_activos(:,end,1), 'Normalization','pdf');
     hold on
-    histogram(lt_activos(:,end,10), 'Normalization','pdf');
-    histogram(lt_activos(:,end,5), 'Normalization','pdf');
-    legend('$\rho$: 0.1','$\rho$: 0.14', '$\rho$: 0.19');
+    histogram(lt_activos(:,end,9), 'Normalization','pdf');
+    histogram(lt_activos(:,end,4), 'Normalization','pdf');
+    legend('$\rho$: 0.9','$\rho$: 0.93', '$\rho$: 0.98');
     title('Trayectoria de activos segun persistencia')
     
     figure;
     histogram(lt_consumo(:,end,1), 'Normalization','pdf');
     hold on
-    histogram(lt_consumo(:,end,10), 'Normalization','pdf');
-    histogram(lt_consumo(:,end,5), 'Normalization','pdf');
-    legend('$\rho$: 0.1','$\rho$: 0.14', '$\rho$: 0.19');
+    histogram(lt_consumo(:,end,9), 'Normalization','pdf');
+    histogram(lt_consumo(:,end,4), 'Normalization','pdf');
+    legend('$\rho$: 0.9','$\rho$: 0.93', '$\rho$: 0.98');
     title('Trayectoria de consumo segun persistencia')
     
     % Tabla estadisticos descriptivos
