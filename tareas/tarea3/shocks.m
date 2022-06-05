@@ -3,10 +3,6 @@ function [panel_shocks] =shocks(n,t1,tr,ee)
 % individuos en la economia durante 20000 periodos. Cada uno de ellos puede
 % enfrentar shocks en algun momento de su vida (ese es el panel). 
 
-% Funcion que permite obtener la distribucion de los shocks. Tenemos 10000
-% individuos en la economia durante 20000 periodos. Cada uno de ellos puede
-% enfrentar shocks en algun momento de su vida (ese es el panel). 
-
 % Prealocamos trayectorias: 1/5 de los individuos con cada shock inicial
 panel_shocks=zeros(n,t1);
 for i=1:length(ee)

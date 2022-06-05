@@ -6,21 +6,23 @@ if size(sigma_mu,2) > 1 % si es un vector basicamente o escalar
 
     figure;
     for j= 1:length(sigma_mu)
-    subplot(2,5,j)
+    h(j) = subplot(2,5,j);
     histogram(lt_activos(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
     sgtitle('Trayectoria activos');
     title(['$\sigma_\mu$: ', num2str(sigma_mu(j))]);
     hold on
     end
+    linkaxes(h, 'xy');
     
     figure;
     for j= 1:length(sigma_mu)
-    subplot(2,5,j)
+    h(j) = subplot(2,5,j);
     histogram(lt_consumo(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
     sgtitle('Trayectoria consumo');
     title(['$\sigma_\mu$: ', num2str(sigma_mu(j))]);
     hold on
     end
+    linkaxes(h, 'xy');
     
     % Para ver mejor la compracion
     figure;
@@ -60,21 +62,23 @@ else
 
     figure;
     for j= 1:length(rho)
-    subplot(2,5,j)
+    h(j) = subplot(2,5,j);
     histogram(lt_activos(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
     sgtitle('Trayectoria activos');
     title(['$\rho$: ', num2str(rho(j))]);
     hold on
     end
+    linkaxes(h, 'xy')
     
     figure;
     for j= 1:length(rho)
-    subplot(2,5,j)
+    h(j) = subplot(2,5,j);
     histogram(lt_consumo(:,end,j), 'FaceAlpha',0.5, 'EdgeColor','none','Normalization','pdf');
     sgtitle('Trayectoria consumo');
     title(['$\rho$: ', num2str(rho(j))]);
     hold on
     end
+    linkaxes(h, 'xy')
     
     % Para ver mejor la compracion
     figure;

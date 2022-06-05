@@ -1,4 +1,4 @@
-function [ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman2(r,w, sigma_mu,rho)
+function [ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman2(r,w, sigma_mu, rho,tau, L)
 % Iteracion sobre la funcion de valor
 % Input
 % ------------------------------------------------------------------------
@@ -6,6 +6,7 @@ function [ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman2(r,w
 % w = salario
 % sigma_mu = volatilidad
 % rho = persistencia
+% tau = impuesto/transferencia
 % Output
 % ---------------------------------------------------------------------
 % ct = policy consumo
@@ -14,6 +15,10 @@ function [ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman2(r,w
 % v1 = value function
 % pos = Posicion optima de activos
 
+ if nargin < 5  % Si estan vacios se define que es cero
+ tau = 0;
+ L = 0;
+ end
 % 0. Parametros ---------------------------------------------------------
 beta = 0.96; % Impaciencia
 sigma = 2; % IES
@@ -45,7 +50,7 @@ pos = NaN(length(A), length(tr)); % Posicion optima de activos
 tic
 while error > tol
 for  i = 1:length(ee) % Desde el primer nivel de productividad hasta el 5to nivel
-        caux = (1+r)*A'+w*ee(i)-A; %Consumo en ausencia de gobierno y deuda, el periodo factible
+        caux = (1+r)*A'+w*ee(i)*(1-tau)-A + tau*L; %Consumo en ausencia de gobierno y deuda, el periodo factible
         caux(caux<=0) = NaN; % Restriccion de no negatividad
         utilaux = crra(caux,sigma); % Utilidad de las distintas posibilidades de consumoo
         vaux =  utilaux+ beta*tr(i,:)*v1'; % Funcion de valor
