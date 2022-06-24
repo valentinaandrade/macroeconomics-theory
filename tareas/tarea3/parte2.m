@@ -16,8 +16,11 @@ A = linspace(0,30,1001); % Grilla de activos, parte de cero, sin endeudamiento
 % Utilizaremos una grilla de tasa de interes
 r = linspace(0, 0.08, 10);
 w= (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
+lt_activos = zeros(10000,1002,length(r)); % Preallocar grilla de N, T, r tasas de interes
+AA= zeros(1,length(r)) ; % Oferta promedio de activos en el SS 
+
 for i = 1:length(r)
-[ct, at, s, v1,pos, panel_shocks, lt_consumo, lt_activos(:, :, i)] = bellman2(r(i),w(i), sigma_mu,rho);
+[ct, at, s, v1,pos, panel_shocks, lt_consumo, lt_activos(:, :, i)] = bellman(r(i),w(i), sigma_mu,rho);
 AA(1,i) = mean(lt_activos(:,end,i));
 end
 
@@ -26,7 +29,7 @@ end
 L = mean(panel_shocks(:,end));
 % Demanda de K desde las CPO
 K = ((alpha)./(r+delta)).^(1/(1-alpha))*L;
-%3. Promedio simple del estado estacionario de A para computar la oferta agregada de activos de la economía.
+% 3. Promedio simple del estado estacionario de A para computar la oferta agregada de activos de la economía.
 % AA
 %  Recuerde endogenizar w
 
@@ -45,7 +48,7 @@ tol = 10^-2;
 error = 1;
 
 w= (1- alpha).*((alpha)./(r(1)+delta)).^(alpha/(1-alpha));
-[~, ~, ~, ~,~, ~, ~, lt_activos1] = bellman2(r(1),w, sigma_mu,rho);
+[~, ~, ~, ~,~, ~, ~, lt_activos1] = bellman(r(1),w, sigma_mu,rho);
 AA1 = mean(lt_activos1(:,end));
 K1 = ((alpha)./(r(1)+delta)).^(1/(1-alpha))*L;
 eq1 = (AA1 -K1)/K1;
@@ -54,7 +57,7 @@ eq1 = (AA1 -K1)/K1;
 while tol < error
     rbar = (r(1) + r(2))/2;
     w= (1- alpha).*((alpha)./(rbar+delta)).^(alpha/(1-alpha));
-    [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman2(rbar,w, sigma_mu,rho);
+    [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman(rbar,w, sigma_mu,rho);
     AAbar = mean(lt_activosbar(:,end));
     Kbar = ((alpha)./(rbar+delta)).^(1/(1-alpha))*L;
     eqbar = (AAbar -Kbar)/Kbar;
@@ -112,14 +115,14 @@ iter = 0;
     r_bar=(r_1+r_0)/2;
     
        w= (1- alpha).*((alpha)./(r_0+delta)).^(alpha/(1-alpha));
-       [~, ~, ~, ~,~, ~, ~, lt_activos0] = bellman2(r_0,w, sigma_mu(i),rho);
+       [~, ~, ~, ~,~, ~, ~, lt_activos0] = bellman(r_0,w, sigma_mu(i),rho);
        AA0 = mean(lt_activos0(:,end));
        K0 = ((alpha)./(r_0+delta)).^(1/(1-alpha))*L;
        eq0 = (AA0 -K0) /K0;
 
         
        w= (1- alpha).*((alpha)./(r_bar+delta)).^(alpha/(1-alpha));
-       [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman2(r_bar,w, sigma_mu(i),rho);
+       [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman(r_bar,w, sigma_mu(i),rho);
        AAbar = mean(lt_activosbar(:,end));
        Kbar = ((alpha)./(r_bar+delta)).^(1/(1-alpha))*L;
        eqbar = (AAbar -Kbar) /Kbar;
@@ -166,7 +169,7 @@ xlabel('$\sigma_\mu$'); ylabel('r');
 
 subplot(2,2,2)
 plot(sigma_mu,y)
-xlabel('$\sigma_\mu$'); ylabel('Producción');
+xlabel('$\sigma_\mu$'); ylabel('Produccion');
 
 subplot(2,2,3)
 plot(sigma_mu,c)

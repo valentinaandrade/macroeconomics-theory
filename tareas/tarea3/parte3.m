@@ -10,12 +10,12 @@ alpha = 0.33; % Complementariedad K y L
 n_e = 5; % Numero de estados posibles de productividad
 A = linspace(0,30,1001); % Grilla de activos, parte de cero, sin endeudamiento
 sigma = 2; %IES
-tau = 0.1; %
+tau = 0.12; %
 % Especificos del problema
 r = 0.03;
 w = 1;
 
-[~, ~, ~, v0_singob,~, ~, ~,~] = bellman2(r,w, sigma_mu, rho); % value function sin gobierno
+[~, ~, ~, v0_singob,~, ~, ~,~] = bellman(r,w, sigma_mu, rho); % value function sin gobierno
 v0_singob = v0_singob';
 %% k. Resolver el problema del agente en equilibrio parcial ---------------
 % Explique económicamente las diferencias con respecto a lo obtenido en el ítem anterior.
@@ -23,7 +23,7 @@ v0_singob = v0_singob';
 load('panel_shock.mat');
 [ee, tr] = discAR(n_e,rho,sigma_mu);
 L = mean(panel_shocks(:,end));
-[ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman2(r,w, sigma_mu, rho,2, L);
+[ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman(r,w, sigma_mu, rho,tau, L);
 
 
 %% Figures; 
@@ -50,7 +50,7 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on');
 sigma_mu = linspace(0.10, 0.19,10);
 rho = 0.96; % Persistencia
 for i = 1:length(sigma_mu)
-[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu(i),rho, tau, L);
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman(r,w, sigma_mu(i),rho, tau, L);
 end
 
 [tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
@@ -61,7 +61,7 @@ tab_act; % Nos dan estadisticos descriptivos solicitados (en terminos nume
 sigma_mu = 0.12; % Volatilidad
 rho = linspace(0.9, 0.98,9);
 for i = 1:length(sigma_mu)
-[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu,rho(i), tau, L);
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman(r,w, sigma_mu,rho(i), tau, L);
 end
 
 [tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
@@ -69,8 +69,8 @@ end
 %% Impacto en el bienestar por cambio en volatilidad ----------------------
 sigma_mu = [0.1 0.15];
 rho = 0.96;
-[~,~, ~, v0,~, ~, ~,~] = bellman2(r,w, sigma_mu(1),rho, tau, L); % limite inferior
-[~,~, ~, v1,~, ~, ~,~] = bellman2(r,w, sigma_mu(2),rho, tau, L); % limite superior
+[~,~, ~, v0,~, ~, ~,~] = bellman(r,w, sigma_mu(1),rho, tau, L); % limite inferior
+[~,~, ~, v1,~, ~, ~,~] = bellman(r,w, sigma_mu(2),rho, tau, L); % limite superior
 
 [ee0, ~] = discAR(n_e,rho,sigma_mu(1));
 [ee1, ~] = discAR(n_e,rho,sigma_mu(2));
@@ -91,8 +91,8 @@ title('Efecto en bienestar de una reduccion de la volatilidad, caso con impuesto
 tau = [0.12 0.04];
 rho = 0.96;
 sigma_mu = 0.12; % Volatilidad
-[~, ~, ~, v0,~, ~, lt_consumo0,lt_activos0] = bellman2(r,w, sigma_mu,rho, tau(1), L);
-[~, ~, ~, v1,~, ~, lt_consumo1,~] = bellman2(r,w, sigma_mu,rho, tau(2), L);
+[~, ~, ~, v0,~, ~, lt_consumo0,lt_activos0] = bellman(r,w, sigma_mu,rho, tau(1), L);
+[~, ~, ~, v1,~, ~, lt_consumo1,~] = bellman(r,w, sigma_mu,rho, tau(2), L);
 
 % Computamos efecto en bienestar del gobierno ----------------------------
 figure;
@@ -111,7 +111,7 @@ tau = 0.075;
 r = linspace(0, 0.08, 10);
 w= (1- alpha).*((alpha)./(r+delta)).^(alpha/(1-alpha));
 for i = 1:length(r)
-[ct, at, s, v1,pos, panel_shocks, lt_consumo, lt_activos(:, :, i)] = bellman2(r(i),w(i), sigma_mu,rho, tau,L);
+[ct, at, s, v1,pos, panel_shocks, lt_consumo, lt_activos(:, :, i)] = bellman(r(i),w(i), sigma_mu,rho, tau,L);
 AA(1,i) = mean(lt_activos(:,end,i));
 end
 % Agregados
@@ -132,7 +132,7 @@ tol = 10^-2;
 error = 1;
 
 w= (1- alpha).*((alpha)./(r(1)+delta)).^(alpha/(1-alpha));
-[~, ~, ~, ~,~, ~, ~, lt_activos1] = bellman2(r(1),w, sigma_mu,rho,tau,L);
+[~, ~, ~, ~,~, ~, ~, lt_activos1] = bellman(r(1),w, sigma_mu,rho,tau,L);
 AA1 = mean(lt_activos1(:,end));
 K1 = ((alpha)./(r(1)+delta)).^(1/(1-alpha))*L;
 eq1 = (AA1 -K1)/K1;
@@ -141,7 +141,7 @@ eq1 = (AA1 -K1)/K1;
 while tol < error
     rbar = (r(1) + r(2))/2;
     w= (1- alpha).*((alpha)./(rbar+delta)).^(alpha/(1-alpha));
-    [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman2(rbar,w, sigma_mu,rho, tau,L);
+    [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman(rbar,w, sigma_mu,rho, tau,L);
     AAbar = mean(lt_activosbar(:,end));
     Kbar = ((alpha)./(rbar+delta)).^(1/(1-alpha))*L;
     eqbar = (AAbar -Kbar)/Kbar;
@@ -183,14 +183,14 @@ iter = 0;
     r_bar=(r_1+r_0)/2;
     
        w= (1- alpha).*((alpha)./(r_0+delta)).^(alpha/(1-alpha));
-       [~, ~, ~, ~,~, ~, ~, lt_activos0] = bellman2(r_0,w, sigma_mu,rho, tau(i), L);
+       [~, ~, ~, ~,~, ~, ~, lt_activos0] = bellman(r_0,w, sigma_mu,rho, tau(i), L);
        AA0 = mean(lt_activos0(:,end));
        K0 = ((alpha)./(r_0+delta)).^(1/(1-alpha))*L;
        eq0 = (AA0 -K0) /K0;
 
         
        w= (1- alpha).*((alpha)./(r_bar+delta)).^(alpha/(1-alpha));
-       [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman2(r_bar,w, sigma_mu,rho, tau(i), L);
+       [~, ~, ~, ~,~, ~, ~, lt_activosbar] = bellman(r_bar,w, sigma_mu,rho, tau(i), L);
        AAbar = mean(lt_activosbar(:,end));
        Kbar = ((alpha)./(r_bar+delta)).^(1/(1-alpha))*L;
        eqbar = (AAbar -Kbar) /Kbar;
@@ -217,14 +217,14 @@ disp('Terminado')
 
 r_eq(1,i)=r_bar;
 y(1,i) = Kbar^alpha*L^(1-alpha);
-c(1,i)= mean((1+rbar)*lt_activosbar(:,end-1)+(1-alpha)*((((r_bar+delta)/alpha)^(1/(alpha-1)))^(alpha))*panel_shocks(:,end)-lt_activosbar(:,end));
+c(1,i)= mean((1+r_bar)*lt_activosbar(:,end-1)+(1-alpha)*((((r_bar+delta)/alpha)^(1/(alpha-1)))^(alpha))*panel_shocks(:,end)-lt_activosbar(:,end));
 
 % Agregados -------------------------------------------------------------
 Keq(1,i) = Kbar;
 AAeq(1,i) = AAbar;
 
 end
-% lento: 0.0341    0.0327    0.0312    0.0298    0.0287    0.0272    0.0256    0.0243    0.0231    0.0217
+% tasa:  0.0313    0.0320    0.0327    0.0333    0.0338
 % Para hacer un poco de analisis
 corrcoef(tau, r_eq); % 
 
@@ -252,10 +252,10 @@ plot(tau, KKeq, tau, AAeq)
 legend
 
 %% Efecto del bienestar en equilibrio
-tau = 0.075;
+tau = 0.1;
 % Con gobierno req
-[~, ~, ~, v1_eqgob,~, ~, ~,~] = bellman2(req,w, sigma_mu, rho,tau, L);
-[~, ~, ~, v1_eqsingob,~,~,~,~] = bellman2(0.031,w, sigma_mu, rho,tau, L);
+[~, ~, ~, v1_eqgob,~, ~, ~,~] = bellman(0.032656,w, sigma_mu, rho,tau, L);
+[~, ~, ~, v1_eqsingob,~,~,~,~] = bellman(0.031,w, sigma_mu, rho);
 
 g_eq = (v1_eqgob./v1_eqsingob).^(1/(1-sigma)) -1 ;
 plot(A,g_eq,'LineWidth',1.5),legend('$\varepsilon=0.48$','$\varepsilon=0.66$','$\varepsilon=0.91$','$\varepsilon=1.26$','$\varepsilon=1.73$','Interpreter','Latex','FontSize',15,'Location','northeast');

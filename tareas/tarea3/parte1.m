@@ -24,7 +24,7 @@ w = 1;
 [ee, tr] = discAR(n_e,rho,sigma_mu);
 
 %% (a) Resolver el problema del agente: sin incertidumbre ni posibilidad de endeudarse
-[ct, at, ~, v1,pos] = bellman(r,w,ee,tr);
+[ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman(r,w, sigma_mu, rho);
 
 %% (b) Figuras de politica 
 policyfigures(ct, at, v1, ee)
@@ -55,31 +55,8 @@ title('Simulacion para un agente')
 % Entonces simularemos como siempre la trayectoria de activos y consumo
 % pero condicional al shock
 % Preallocar trayectorias y transponer dimension de posicion optima
-lt_activos=zeros(n,t1-t0+1);
-lt_consumo=zeros(n,t1-t0+1);%Prealocamos trayectoria del consumo
-position=pos';
 
-tic 
-for k=0:9 % Se ira rellenando lt_activos para cada 1000 individuos, asi es mas rapido
-        for t=2:t1-t0+2
-            for i=(k*n/10)+1:(k+1)*(n/10) % Aqui se ve la segmentacion de la poblacion
-            pos_act=sum(A<(lt_activos(i,t-1)))+1; % Registramos la posicion optima de la grilla en el pasado
-                for j=1:length(ee) % Para cada nivel de productividad
-                    if panel_shocks(i,t-1)==ee(j) % Si el shock en el periodo anterior es igual al nivel de productividad
-                    lt_activos(i,t)=A(position(pos_act,j));  % Entonces la posicion optima de activos es la donde ocurre el shock
-                    end
-                end
-            end   
-        end
-end
-toc 
-
-
-for t=1:t1-t0+1
-    for i=1:n
-        lt_consumo(i,t)=(1+r)*lt_activos(i,t)+w*panel_shocks(i,t)-lt_activos(i,t+1);        
-    end
-end
+% Ya fueron calculadas en punto (A)
 
 % Figuras ----------------------------------------------------------------
 figure
@@ -106,7 +83,7 @@ annotation('textbox',dim,'String',str,'FitBoxToText','on');
 sigma_mu = linspace(0.10, 0.19,10);
 rho = 0.96; % Persistencia
 for i = 1:length(sigma_mu)
-[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu(i),rho);
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman(r,w, sigma_mu(i),rho);
 end
 
 [tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
@@ -119,7 +96,7 @@ tab_act; % Nos dan estadisticos descriptivos solicitados (en terminos numericos)
 sigma_mu = 0.12; % Volatilidad
 rho = linspace(0.9, 0.98,9);
 for i = 1:length(sigma_mu)
-[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman2(r,w, sigma_mu,rho(i));
+[ct, at, s, ~,pos, panel_shocks, lt_consumo(:,:,i),lt_activos(:,:,i)] = bellman(r,w, sigma_mu,rho(i));
 end
 
 [tab_act, tab_consumo] = descriptives(sigma_mu,rho,lt_activos,lt_consumo);
@@ -135,8 +112,8 @@ end
 % sigma con 0.1 y como v1 al sigma con 0.15
 sigma_mu = [0.1 0.15];
 rho = 0.96;
-[~,~, ~, v0,~, ~, ~,~] = bellman2(r,w, sigma_mu(1),rho); % limite inferior
-[~,~, ~, v1,~, ~, ~,~] = bellman2(r,w, sigma_mu(2),rho); % limite superior
+[~,~, ~, v0,~, ~, ~,~] = bellman(r,w, sigma_mu(1),rho); % limite inferior
+[~,~, ~, v1,~, ~, ~,~] = bellman(r,w, sigma_mu(2),rho); % limite superior
 
 % Necesito saber el area que esta entremedio. La forma funcional me la da
 % log(et) = alpha + rho*log(et-1) + mu

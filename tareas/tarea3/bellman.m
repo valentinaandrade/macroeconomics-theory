@@ -1,11 +1,12 @@
-function [ct, at, s, v1,pos] = bellman(r,w,ee,tr)
+function [ct, at, s, v1,pos, panel_shocks, lt_consumo,lt_activos] = bellman(r,w, sigma_mu, rho,tau, L)
 % Iteracion sobre la funcion de valor
 % Input
 % ------------------------------------------------------------------------
 % r = tasa de interes
 % w = salario
-% ee = estados de productividad
-% tr = matriz de transicion
+% sigma_mu = volatilidad
+% rho = persistencia
+% tau = impuesto/transferencia
 % Output
 % ---------------------------------------------------------------------
 % ct = policy consumo
@@ -14,10 +15,18 @@ function [ct, at, s, v1,pos] = bellman(r,w,ee,tr)
 % v1 = value function
 % pos = Posicion optima de activos
 
+ if nargin < 5  % Si estan vacios se define que es cero
+ tau = 0;
+ L = 0;
+ end
 % 0. Parametros ---------------------------------------------------------
 beta = 0.96; % Impaciencia
 sigma = 2; % IES
+n_e = 5; % Numero de estados posibles de productividad
 A = linspace(0,30,1001); % Grilla de activos
+
+% Estados de productividad -----------------------------------------------
+[ee, tr] = discAR(n_e,rho,sigma_mu);
 
 % Preparando la iteracion ---------------------------------------------
 tol = 10^-2; % tolerancia aceptada
@@ -35,10 +44,11 @@ v1 = ones(length(A), length(tr)); % guess de la funcion valor es una matriz de u
 v0 = NaN(length(A), length(tr)); % Value function en t-1
 pos = NaN(length(A), length(tr)); % Posicion optima de activos
 
+% Iteracion en la funcion de valor ----------------------------------------
 tic
 while error > tol
 for  i = 1:length(ee) % Desde el primer nivel de productividad hasta el 5to nivel
-        caux = (1+r)*A'+w*ee(i)-A; %Consumo en ausencia de gobierno y deuda, el periodo factible
+        caux = (1+r)*A'+w*ee(i)*(1-tau)-A + tau*L; %Consumo en ausencia de gobierno y deuda, el periodo factible
         caux(caux<=0) = NaN; % Restriccion de no negatividad
         utilaux = crra(caux,sigma); % Utilidad de las distintas posibilidades de consumoo
         vaux =  utilaux+ beta*tr(i,:)*v1'; % Funcion de valor
@@ -78,6 +88,45 @@ s = w*ee - ct; % Trayectoria de ahorro
 % Esto es solo para presentarlas como vector y se vean bonitas
 v1 = v1';
 
+% Shocks de productividad ----------------------------------------------
+ n = 10000; % numero de individuos
+ t1= 2000; % periodos
+ t0= 1000; % periodos que descartare depsues, asique que son irrelevantes para el analisis mas adelante
+ [panel_shocks] = shocks(n,t1,tr,ee);
+
+% Trayectorias de consumo y activos ante shocks --------------------------
+% Si el individuo tiene shocks en su productividad, y queremos saber que
+% pasa con su consumo y ahorro, en el fondo necesitaremos saber como eso
+% afecta a la trayectoria de productividad. 
+% Entonces simularemos como siempre la trayectoria de activos y consumo
+% pero condicional al shock
+% Preallocar trayectorias y transponer dimension de posicion optima
+lt_activos=zeros(n,t1-t0+1);
+lt_consumo=zeros(n,t1-t0+1);%Prealocamos trayectoria del consumo
+position=pos';
+
+tic 
+for k=0:9 % Se ira rellenando lt_activos para cada 1000 individuos, asi es mas rapido
+        for t=2:t1-t0+2
+            for i=(k*n/10)+1:(k+1)*(n/10) % Aqui se ve la segmentacion de la poblacion
+            pos_act=sum(A<(lt_activos(i,t-1)))+1; % Registramos la posicion optima de la grilla en el pasado
+                for j=1:length(ee) % Para cada nivel de productividad
+                    if panel_shocks(i,t-1)==ee(j) % Si el shock en el periodo anterior es igual al nivel de productividad
+                    lt_activos(i,t)=A(position(pos_act,j));  % Entonces la posicion optima de activos es la donde ocurre el shock
+                    end
+                end
+            end   
+        end
+end
+toc 
+
+
+for t=1:t1-t0+1
+    for i=1:n
+        lt_consumo(i,t)=(1+r)*lt_activos(i,t)+w*panel_shocks(i,t)-lt_activos(i,t+1);        
+    end
+end
+fprintf('¡Trayectorias optimas estimadas!\n');
 
 
 end
